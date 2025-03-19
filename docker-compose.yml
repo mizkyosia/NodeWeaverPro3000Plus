@@ -1,15 +1,23 @@
 services:
   db:
     image: mysql
-    restart: unless-stopped
+    restart: always
     env_file: ./.env
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
       - MYSQL_DATABASE=$MYSQLDB_DATABASE
     ports:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    expose:
+      - $MYSQLDB_DOCKER_PORT
     volumes:
-      - "./src/data/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./static/data/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
   node_weaver:
     develop:
@@ -36,4 +44,4 @@ services:
     tty: true
 
 volumes:
-  db:
+  nw_db:
