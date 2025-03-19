@@ -18,6 +18,7 @@ class Graph{
 
     }
 
+    //method 
     public addNode(xCoordonate : number, yCoordonate : number) {
         let newPointCoordonate :coordonate = {x:xCoordonate, y:yCoordonate};
         let newNodeID = this.numberNode;
@@ -25,16 +26,17 @@ class Graph{
         //mise a jour des varaibles 
         this.numberNode++;
         this.nodeCoordonate.push(newPointCoordonate);
-        
-        for (let x:number = 0; x < this.numberNode; x++){
-            this.matrix[newNodeID][x] = Infinity;
-        }
 
-        for (let y:number = 0; y < this.numberNode; y++){
-            this.matrix[y][newNodeID];
+        this.matrix.push(new Array(this.numberNode).fill(Infinity));
+
+        // Mise à jour des colonnes existantes
+        for (let i = 0; i < this.numberNode - 1; i++) {
+            this.matrix[i].push(Infinity);
         }
     } 
 
+
+    //debug method
     public printMatrix(){
         for (let x:number = 0; x < this.numberNode; x++){
             console.log("| ");
@@ -43,17 +45,17 @@ class Graph{
             }
             console.log(" |\n");
         }
-
-        
     }
 
 }
 
+//test 
 
-
-
-//test
-
-let newGraph:Graph;
-
+/*
+let newGraph:Graph = new Graph();
+newGraph.addNode(0, 0)
+newGraph.addNode(0, 0)
+newGraph.addNode(0, 0)
+newGraph.addNode(0, 0)
 newGraph.printMatrix();
+*/
