@@ -1,0 +1,16 @@
+@mixin common-graph-list {
+    padding: 2em;
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+#editorList {
+    @include common-graph-list;
+
+    flex-wrap: wrap;
+}
+
+.graphList {
+    @include common-graph-list;
+}

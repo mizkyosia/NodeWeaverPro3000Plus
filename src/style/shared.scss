@@ -1,10 +1,38 @@
-#graphList {
-    padding: 2em;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+body, html {
+    background-color: #1a202f;
+    margin: 0;
+    padding: 0;
+}
 
-    gap: 2em;
+* {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+h1 {
+    color: white;
+    font-size: 5em;
+    text-shadow: 0 0 5px aquamarine;
+
+}
+
+h2 {
+    font-size: 2em;
+    color: gray;
+}
+
+h3 {
+    color: gainsboro;
+    font-size: 2.25em;
+    padding: 2em;
 }
 
 .graphPreview {
@@ -15,7 +43,7 @@
 
     display: flex;
     flex-direction: column;
-    background-color: #36393e;
+    background-color: #36393eaa;
 
     color: rgb(186, 255, 232) ;
     text-decoration: none;

@@ -1,5 +1,5 @@
 <svelte:head>
-    <link rel="stylesheet" href="/style/frontPage.scss" />
+    <link rel="stylesheet" href="/src/style/frontPage.scss" />
 </svelte:head>
 
 <main>
