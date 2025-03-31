@@ -1,0 +1,109 @@
+@use "colors";
+@use "mixins";
+
+@mixin common-graph-list {
+    padding: 2em;
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+.graphPreview {
+    display: flex;
+    width: 25em;
+    border-radius: 20px;
+    border: solid transparent 1px;
+
+    display: flex;
+    flex-direction: column;
+    background-color: #36393eaa;
+
+    color: rgb(186, 255, 232);
+    text-decoration: none;
+
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-margin: 10px;
+
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) .3s;
+
+    &:hover {
+        scale: 105%;
+    }
+
+    >img {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+
+        width: 100%;
+        height: 10em;
+
+        object-fit: cover;
+    }
+
+    >h4 {
+        margin: .5em;
+        margin-bottom: .2em;
+    }
+
+    >p {
+        filter: brightness(70%);
+        margin: .5em;
+        margin-top: .2em;
+    }
+}
+
+.previewSection {
+    display: flex;
+    flex-direction: column;
+
+    &>.previewSection__topBar {
+        @include common-graph-list;
+        align-items: center;
+
+        padding-bottom: 0;
+
+        &>hr {
+            flex-grow: 1;
+
+            height: 0;
+        }
+
+        &>span {
+            font-weight: bold;
+
+            font-size: 1.35em;
+        }
+
+        &>a {
+            color: colors.$link-color;
+            text-decoration: none;
+        }
+
+        &>button {
+            @include mixins.simple-button();
+
+            &>img {
+                height: 2em;
+            }
+
+            &:hover {
+                filter: brightness(120%);
+            }
+
+            &:last-child {
+                rotate: .5turn;
+            }
+        }
+    }
+
+    &>.previewSection__inner {
+        @include common-graph-list;
+        overflow-x: scroll;
+        padding-top: 1em;
+
+        scroll-snap-type: x mandatory;
+    }
+
+
+}

@@ -1,20 +1,29 @@
 @use "colors";
+@use "mixins";
+@use "variables";
 
 * {
     z-index: 0;
 }
 
+body {
+    position:static;
+    padding-top: variables.$header-size !important;
+}
+
 header {
-    color: colors.$text-color;
+    color: colors.$text-active;
+
+    top: 0;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
-    position: sticky;
+    position: fixed;
     box-sizing: border-box;
     width: 100vw;
-    height: fit-content;
+    height: variables.$header-size;
     background-color: darkslategray;
 
     padding: 1rem;
@@ -39,15 +48,11 @@ header {
     }
 
     & button, a {
+        @include mixins.simple-button();
+
         background-color: colors.$header-fg;
-        padding: 0;
+
         aspect-ratio: 1;
-
-        cursor: pointer;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
 
         border: 2px solid transparent;
         border-radius: 20%;
@@ -88,20 +93,24 @@ header {
 
         padding: .5em;
 
+        filter: brightness(80%);
+
         &:focus-visible {
             color: white;
+
+            filter: brightness(110%);
 
             box-shadow: inset 0 0 10px -11px black, 0 0 10px -3px black;
         }
     }
 
     &>#sidePanel {
-        padding: inherit;
         box-sizing: border-box;
         position: absolute;
 
         display: flex;
         flex-direction: column;
+        gap: .3em;
 
         left: 0;
         top: 0;
@@ -111,8 +120,6 @@ header {
         translate: -100% 0;
 
         z-index: 100;
-
-        // filter: brightness(90%);
 
         &::before {
             content: '';
@@ -134,7 +141,7 @@ header {
         &::after {
             content: '';
 
-            background-color: colors.$header-bg;
+            background-color: colors.$global-bg;
             position: absolute;
             left: 0;
             right: 0;
@@ -148,9 +155,8 @@ header {
             flex-direction: row;
             align-items: center;
 
-            border-bottom: 2px solid gainsboro;
-            padding-bottom: .5em;
-            margin-bottom: .5em;
+            background-color: colors.$header-bg;
+            padding: 1em;
 
             &>span {
                 color: white;
@@ -162,26 +168,13 @@ header {
             }
         }
 
-        &>a {
-            color: inherit;
-            text-decoration: none;
-            font-size: .75em;
+        > #sidePanel__body {
+            padding: 1em;
+            padding-top: .5em;
 
-            padding: .4em;
-
-            gap: .7em;
-
-            background-color: colors.$header-bg;
-
-            justify-content: start;
-
-            aspect-ratio: unset;
-
-            border-radius: .75em;
-
-            &>span {
-                font-size: 1.75em;
-            }
+            display: flex;
+            flex-direction: column;
+            gap: .35em;
         }
 
         &.openPanel {
