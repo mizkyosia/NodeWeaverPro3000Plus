@@ -9,6 +9,7 @@ import search from "$lib/img/icons/search.svelte";
 import star from "$lib/img/icons/star.svelte";
 import world from "$lib/img/icons/world.svelte";
 import box from "$lib/img/icons/box.svelte";
+import plus from "$lib/img/icons/plus.svelte";
 
 // Exports
 export {
@@ -21,5 +22,6 @@ export {
     search,
     star,
     world,
-    box
+    box,
+    plus
 }

@@ -50,10 +50,6 @@ main#home {
             flex-direction: row;
             align-items: center;
             gap: .5em;
-
-            &>button {
-                font-size: 2em;
-            }
         }
 
         // overflow-y: scroll;

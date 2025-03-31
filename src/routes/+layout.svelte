@@ -47,7 +47,7 @@
             <span>Navigate</span>
         </div>
 
-        <div id="sidePanel__body">
+        <div id="sidePanel__body" class="buttonList">
             <IconLink label="Discover" icon="world" link="/discover" />
             <IconLink label="Home" icon="home" link="/home" />
             <IconLink label="Learn" icon="book" link="/tutorial" />
