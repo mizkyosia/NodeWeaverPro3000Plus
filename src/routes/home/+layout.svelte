@@ -8,26 +8,33 @@
     import Icon from "$lib/components/Icon.svelte";
 
     let addingCollection = $state(false);
-    let collectionName = $state("");
+    let collection = $state({
+        name: "",
+        description: "",
+    });
 </script>
-
-<svelte:head></svelte:head>
 
 <Dialog
     title="Create new collection"
     bind:show={addingCollection}
-    onComplete={
-        () => {
-            console.log("Adding collection : " + collectionName);
-            collectionName = "New Collection";
-        }
-    }
+    onComplete={() => {
+        console.log("Adding collection : ", $state.snapshot(collection));
+        collection = {
+            name: "",
+            description: "",
+        };
+    }}
 >
     <input
         type="text"
-        bind:value={collectionName}
+        bind:value={collection.name}
         placeholder="New Collection"
     />
+
+    <textarea
+        bind:value={collection.description}
+        placeholder="Description (optional)"
+    ></textarea>
 </Dialog>
 
 <main id="home">

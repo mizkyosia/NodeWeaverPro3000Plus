@@ -103,7 +103,8 @@ hr {
 }
 
 input,
-button {
+button,
+textarea {
     background-color: colors.$input-bg;
 
     border: 2px solid colors.$border-mid;
@@ -113,7 +114,7 @@ button {
 
     &[type=submit],
     &[type=reset],
-    &:not(input) {
+    &:not(input, textarea) {
         cursor: pointer;
 
         background-color: colors.$button-inactive;
@@ -123,6 +124,10 @@ button {
         }
     }
 
+}
+
+textarea {
+    min-height: 7em;
 }
 
 dialog {

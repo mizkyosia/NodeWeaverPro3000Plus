@@ -17,7 +17,14 @@
 </script>
 
 {#if show}
-    <dialog class="modal" bind:this={dialog}>
+    <dialog
+        class="modal"
+        bind:this={dialog}
+        onclose={() => {
+            show = false;
+            onCancel?.();
+        }}
+    >
         <h4>{title}</h4>
         {#if description}
             <p>{description}</p>

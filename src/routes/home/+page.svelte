@@ -3,6 +3,15 @@
     import PreviewSection from "$lib/components/PreviewSection.svelte";
     import placeholder from "$lib/img/placeholder.webp";
 
+    // Define header state
+    import { headerState } from "$lib/headerState.svelte";
+    headerState.path = [
+        {
+            name: "Home",
+            url: "/home",
+        },
+    ];
+
     import "$lib/style/discover.scss";
 
     let data = [];

@@ -63,4 +63,8 @@ main#home {
 
         overflow-y: scroll;
     }
+
+    h2 {
+        color: colors.$text-active;
+    }
 }

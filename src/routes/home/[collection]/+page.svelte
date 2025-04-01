@@ -1,6 +1,9 @@
 <script lang="ts">
     import Icon from "$lib/components/Icon.svelte";
 
+    // Get route params
+    const { data } = $props();
+
     // Define header state
     import { headerState } from "$lib/headerState.svelte";
     headerState.path = [
@@ -9,11 +12,11 @@
             url: "/home",
         },
         {
-            name: "Favorites",
-            url: "/home/favorites",
+            name: data.collection,
+            url: "/home/" + data.collection,
         },
     ];
 </script>
 
-<h2><Icon name="star" /> Favorites</h2>
-<p>You can favorite a graph by clicking the little star on its page</p>
+<h2><Icon name="box" />{data.collection}</h2>
+<p>A nice description</p>

@@ -7,13 +7,13 @@
     import IconLink from "$lib/components/IconLink.svelte";
 
     // State imports
-    import { page } from "$app/state";
+    import { headerState } from "$lib/headerState.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
     // Props
     const { children } = $props();
 
-    //
+    // State declarations
     let openPanel: boolean = $state(false);
 </script>
 
@@ -22,7 +22,14 @@
         <button aria-label="Menu" onclick={() => (openPanel = true)}>
             <Icon name="menu" />
         </button>
-        <span>{page.url}</span>
+        <div id="header__routeDisplay">
+            {#each headerState.path as part, i}
+                <a href={part.url}>{part.name}</a>
+                {#if i < headerState.path.length - 1}
+                    <span>/</span>
+                {/if}
+            {/each}
+        </div>
     </div>
 
     <div>

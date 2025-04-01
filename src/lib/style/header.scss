@@ -72,6 +72,33 @@ header {
         }
     }
 
+    #header__routeDisplay {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        padding: .4em;
+        gap: .2em;
+
+        a {
+            background-color: transparent;
+            text-decoration: none;
+
+            color: colors.$text-active;
+            text-shadow: 0 0 3px transparent;
+
+            transition: all .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+            &:hover {
+                text-shadow: 0 0 3px colors.$text-active;
+            }
+        }
+
+        span {
+            color: colors.$text-passive;
+        }
+    }
+
     & img,
     svg {
         height: 2em;
