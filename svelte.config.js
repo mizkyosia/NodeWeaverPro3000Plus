@@ -10,7 +10,10 @@ const config = {
     preprocess: sveltePreprocess(),
 
     kit: {
-        adapter: adapter()
+        adapter: adapter(),
+        alias: {
+            $db: "./src/db"
+        }
     }
 };
 

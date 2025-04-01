@@ -1,22 +1,21 @@
 <script lang="ts">
     import GraphPreview from "$lib/components/GraphPreview.svelte";
+    import image from "$lib/img/placeholder.webp";
+
+    import "$lib/style/discover.scss";
 
     let data = [];
     for (let i = 0; i < 5; i++) {
         data.push({
             name: "Test",
             date: "01/01/1970",
-            image: "/images/placeholder.webp",
+            image: image,
             id: i,
         });
     }
 
     let titles = [1, 2, 3];
 </script>
-
-<svelte:head>
-    <link rel="stylesheet" href="/src/style/discover.scss" />
-</svelte:head>
 
 <h1>Discover</h1>
 
