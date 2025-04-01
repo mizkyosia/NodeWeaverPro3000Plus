@@ -11,12 +11,18 @@ services:
       - $DB_LOCAL_PORT:$DB_DOCKER_PORT
     expose:
       - $DB_DOCKER_PORT
+    networks:
+      - backend
+    volumes:
+      - nw-db:/var/lib/mysql
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - backend
 
   node_weaver:
     develop:
@@ -29,7 +35,7 @@ services:
     depends_on:
       - db
     build: ./
-    restart: unless-stopped
+    restart: on-failure
     env_file: ./.env
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
@@ -41,6 +47,12 @@ services:
       - DB_PORT=$DB_DOCKER_PORT
     stdin_open: true
     tty: true
+    networks:
+      - backend
 
 volumes:
-  nw_db:
+  nw-db:
+
+networks:
+  backend:
+    driver: bridge
