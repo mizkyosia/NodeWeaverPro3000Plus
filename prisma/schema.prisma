@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id      Int     @id @default(autoincrement())
+    name    String
+    picture String?
+
+    sessions  Session[]
+    graphs    Graph[]   @relation("GraphAuthor")
+    favorites Graph[]   @relation("Favorites")
+    ratings   Rating[]  @relation("RatingAuthor")
+}
+
+model Graph {
+    id          Int    @id @default(autoincrement())
+    name        String
+    description String
+    data  Json
+    authorId    Int
+
+    user  User   @relation("GraphAuthor", references: [id], fields: [authorId])
+    liked User[] @relation("Favorites")
+}
+
+model Rating {
+    id          Int    @id @default(autoincrement())
+    authorId    Int
+    title       String
+    description String
+    rating      Int
+
+    author User @relation("RatingAuthor", references: [id], fields: [authorId], onDelete: Cascade)
+}
+
+model Session {
+    id        String      @id
+    userId    Int
+    expiresAt DateTime
+
+    user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+}

@@ -25,11 +25,11 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
-		"@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+		"@oslojs/crypto": "^1.0.1",
+		"@oslojs/encoding": "^1.1.0",
+		"@prisma/client": "^6.5.0",
 		"@types/mysql": "^2.15.26",
 		"dotenv": "^16.4.7",
-		"firebase": "^11.4.0",
-		"mongodb": "^6.15.0",
 		"mysql2": "^3.13.0",
 		"prisma": "^6.5.0"
 	}

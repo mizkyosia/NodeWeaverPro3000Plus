@@ -1,54 +1,22 @@
 services:
 
-  mongodb:
-    image: mongo:6-jammy
-    container_name: mongodb
-    volumes:
-      - nw_db:/data/db
+  db:
+    image: mysql:latest
+    restart: always
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$DB_DATABASE
     ports:
       - $DB_LOCAL_PORT:$DB_DOCKER_PORT
     expose:
       - $DB_DOCKER_PORT
-    environment:
-      - MONGO_INITDB_DATABASE=$DB_DATABASE
-      - MONGO_INITDB_ROOT_USERNAME=$DB_ROOT_USER
-      - MONGO_INITDB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
 
-  mongo-express:
-    image: mongo-express
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-      - ME_CONFIG_MONGODB_PORT=
-      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=${DB_ROOT_USER}
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${DB_ROOT_PASSWORD}
-      - ME_CONFIG_BASICAUTH_USERNAME=${DB_USER}
-      - ME_CONFIG_BASICAUTH_PASSWORD=${DB_ROOT_PASSWORD}
-    depends_on:
-      - mongodb
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "8888:8081"
-
-  # db:
-  #   image: mysql
-  #   restart: always
-  #   env_file: ./.env
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-  #     - MYSQL_DATABASE=$DB_DATABASE
-  #   ports:
-  #     - $DB_LOCAL_PORT:$DB_DOCKER_PORT
-  #   expose:
-  #     - $DB_DOCKER_PORT
-  #   volumes:
-  #     - "./static/data/schema.sql:/docker-entrypoint-initdb.d/1.sql"
-
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
+      - 8080:8080
 
   node_weaver:
     develop:
@@ -59,7 +27,7 @@ services:
           ignore:
             - node_modules/
     depends_on:
-      - mongodb
+      - db
     build: ./
     restart: unless-stopped
     env_file: ./.env
