@@ -11,7 +11,7 @@
     import Icon from "$lib/components/Icon.svelte";
 
     // Props
-    const { children } = $props();
+    const { children, data } = $props();
 
     // State declarations
     let openPanel: boolean = $state(false);
@@ -39,10 +39,20 @@
 
     <div>
         <input placeholder="Search..." />
-        <span> @user12345 </span>
-        <button class="header__account" aria-label="Account button"
-            ><Icon name="login" /></button
-        >
+        <span>
+            {#if data.user}
+                {@html data.user.name}
+            {:else}
+                Guest
+            {/if}
+        </span>
+        <button class="header__account" aria-label="Account button">
+            {#if data.user}
+                <span>Profile picture</span>
+            {:else}
+                <Icon name="login" />
+            {/if}
+        </button>
     </div>
 
     <!-- Side panel -->
@@ -58,7 +68,11 @@
             <IconLink label="Discover" icon="world" link="/discover" />
             <IconLink label="Home" icon="home" link="/home" />
             <IconLink label="Learn" icon="book" link="/tutorial" />
-            <IconLink label="Account" icon="login" link="/account" />
+            {#if data.user}
+                <IconLink label="Account" icon="login" link="/account" />
+            {:else}
+                <IconLink label="Login" icon="login" link="/login" />
+            {/if}
         </div>
     </section>
 </header>

@@ -4,7 +4,7 @@ import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from "@oslojs/enco
 import { PrismaClient } from "@prisma/client";
 import { sha256 } from "@oslojs/crypto/sha2";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 /**
  * Generates a new session token for auth purposes

@@ -18,23 +18,34 @@ enum Role {
     ADMIN
 }
 
-model User {
-    id       Int      @id @default(autoincrement())
-    name     String
-    email    String   @unique
-    joinedAt DateTime @default(now())
+enum ProfileVisibility {
+    PUBLIC
+    RESTRICTED
+    PRIVATE
+}
 
-    sessions    Session[]
-    graphs      Graph[]      @relation("GraphAuthor")
-    favorites   Graph[]      @relation("Favorites")
-    ratings     Rating[]     @relation("RatingAuthor")
-    collections Collection[] @relation("CollectionAuthor")
+model User {
+    id           Int               @id @default(autoincrement())
+    name         String            @unique
+    passwordHash String
+    email        String            @unique
+    joinedAt     DateTime          @default(now())
+    visibility   ProfileVisibility @default(PUBLIC)
+
+    sessions              Session[]
+    graphs                Graph[]      @relation("GraphAuthor")
+    favorites             Graph[]      @relation("Favorites")
+    ratings               Rating[]     @relation("RatingAuthor")
+    collections           Collection[] @relation("CollectionAuthor")
+    subscribedCollections Collection[] @relation("CollectionSubscriber")
 }
 
 model Graph {
-    id          Int     @id @default(autoincrement())
-    title       String  @db.VarChar(255)
-    description String
+    id          Int      @id @default(autoincrement())
+    title       String   @db.VarChar(255)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime
+    description String   @db.LongText
     authorId    Int?
     public      Boolean
     data        Json
@@ -46,11 +57,12 @@ model Graph {
 }
 
 model Rating {
-    id          Int    @id @default(autoincrement())
+    id          Int      @id @default(autoincrement())
     authorId    Int?
+    createdAt   DateTime @default(now())
     postId      Int
-    title       String @db.VarChar(255)
-    description String
+    title       String   @db.VarChar(255)
+    description String   @db.MediumText
     rating      Int
 
     post   Graph @relation("GraphRatings", references: [id], fields: [postId], onDelete: Cascade)
@@ -58,13 +70,18 @@ model Rating {
 }
 
 model Collection {
-    id          Int    @id @default(autoincrement())
-    title       String @db.VarChar(255)
-    description String
+    id          Int      @id @default(autoincrement())
+    title       String   @db.VarChar(255)
+    description String   @db.MediumText
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime
     authorId    Int?
+    userId      Int?
+    public      Boolean
 
-    author User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
-    graphs Graph[] @relation("CollectionGraphs")
+    author      User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
+    graphs      Graph[] @relation("CollectionGraphs")
+    subscribers User[]  @relation("CollectionSubscriber")
 }
 
 model Session {

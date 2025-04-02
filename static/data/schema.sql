@@ -1,9 +1,0 @@
-CREATE DATABASE IF NOT EXISTS nw_db
-
-USE nw_db
-
-CREATE TABLE IF NOT EXISTS Graphs (
-    Id INT,
-    Title VARCHAR(255),
-    Created TIMESTAMP
-)

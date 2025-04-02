@@ -1,11 +1,14 @@
 <script lang="ts">
     import IconLink from "$lib/components/IconLink.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
+    import type { LayoutProps } from "./$types";
 
-    const { children } = $props();
+    const { children, data }: LayoutProps = $props();
 
     import "$lib/style/home.scss";
     import Icon from "$lib/components/Icon.svelte";
+
+    console.log("Collections to add : ", data.collections.length);
 
     let addingCollection = $state(false);
     let collection = $state({
@@ -49,7 +52,9 @@
                 ><Icon name="plus" /></button
             >
         </div>
-        <IconLink label="Collection 1" icon="box" link="/home/abc" />
+        {#each data.collections as c}
+            <IconLink label={c.title} icon="box" link="/home/{c.id}" />
+        {/each}
     </nav>
     <section>
         {@render children()}
