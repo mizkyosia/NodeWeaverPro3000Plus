@@ -13,40 +13,62 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model User {
-    id      Int     @id @default(autoincrement())
-    name    String
-    picture String?
+enum Role {
+    USER
+    ADMIN
+}
 
-    sessions  Session[]
-    graphs    Graph[]   @relation("GraphAuthor")
-    favorites Graph[]   @relation("Favorites")
-    ratings   Rating[]  @relation("RatingAuthor")
+model User {
+    id       Int      @id @default(autoincrement())
+    name     String
+    email    String   @unique
+    joinedAt DateTime @default(now())
+
+    sessions    Session[]
+    graphs      Graph[]      @relation("GraphAuthor")
+    favorites   Graph[]      @relation("Favorites")
+    ratings     Rating[]     @relation("RatingAuthor")
+    collections Collection[] @relation("CollectionAuthor")
 }
 
 model Graph {
-    id          Int    @id @default(autoincrement())
-    name        String
+    id          Int     @id @default(autoincrement())
+    title       String  @db.VarChar(255)
     description String
-    data  Json
-    authorId    Int
+    authorId    Int?
+    public      Boolean
+    data        Json
 
-    user  User   @relation("GraphAuthor", references: [id], fields: [authorId])
-    liked User[] @relation("Favorites")
+    user        User?        @relation("GraphAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
+    favorited   User[]       @relation("Favorites")
+    ratings     Rating[]     @relation("GraphRatings")
+    collections Collection[] @relation("CollectionGraphs")
 }
 
 model Rating {
     id          Int    @id @default(autoincrement())
-    authorId    Int
-    title       String
+    authorId    Int?
+    postId      Int
+    title       String @db.VarChar(255)
     description String
     rating      Int
 
-    author User @relation("RatingAuthor", references: [id], fields: [authorId], onDelete: Cascade)
+    post   Graph @relation("GraphRatings", references: [id], fields: [postId], onDelete: Cascade)
+    author User? @relation("RatingAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
+}
+
+model Collection {
+    id          Int    @id @default(autoincrement())
+    title       String @db.VarChar(255)
+    description String
+    authorId    Int?
+
+    author User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
+    graphs Graph[] @relation("CollectionGraphs")
 }
 
 model Session {
-    id        String      @id
+    id        String   @id
     userId    Int
     expiresAt DateTime
 
