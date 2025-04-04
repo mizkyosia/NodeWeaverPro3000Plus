@@ -5,7 +5,7 @@
         name,
         title,
         value = $bindable(),
-        error = $bindable(),
+        error,
         type,
         required = false,
         forceAnim = false,
@@ -21,11 +21,11 @@
 </script>
 
 <div class="formInput">
-    {#if error}
-        <span class="error">{error}</span>
-    {/if}
     <div class="formInput__inner">
         <label class={{ forceAnim }} for={name}>{title}</label>
         <input bind:value {name} {type} {required} placeholder=" " />
     </div>
+    {#if error}
+        <span class="error">{error}</span>
+    {/if}
 </div>

@@ -10,11 +10,15 @@
     import { headerState } from "$lib/headerState.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
+    // Lib imports
+    import { clickOutside } from "$lib/clickOutside";
+
     // Props
     const { children, data } = $props();
 
     // State declarations
     let openPanel: boolean = $state(false);
+    let openAccountPanel: boolean = $state(false);
 </script>
 
 <header>
@@ -46,17 +50,61 @@
                 Guest
             {/if}
         </span>
-        <button class="header__account" aria-label="Account button">
-            {#if data.user}
-                <span>Profile picture</span>
-            {:else}
-                <Icon name="login" />
-            {/if}
+        <button
+            class="header__account"
+            aria-label="Account button"
+            onclick={() => (openAccountPanel = !openAccountPanel)}
+        >
+            <Icon name="account" />
         </button>
     </div>
 
+    <!-- Account info panel -->
+    {#if openAccountPanel}
+        <section
+            class="dialog"
+            id="accountPanel"
+            use:clickOutside={() => {
+                openAccountPanel = false;
+            }}
+        >
+            {#if data.user}
+                <span id="accountPanel__username">{@html data.user.name}</span>
+                <hr />
+                <IconLink
+                    label="Manage account"
+                    icon="settings"
+                    link="/account"
+                    bind:openedMenu={openAccountPanel}
+                />
+                <IconLink
+                    label="Log out"
+                    icon="logout"
+                    link="/logout"
+                    red
+                    reload={true}
+                    preload={false}
+                    bind:openedMenu={openAccountPanel}
+                />
+            {:else}
+                <IconLink
+                    label="Log in"
+                    icon="login"
+                    link="/login"
+                    bind:openedMenu={openAccountPanel}
+                />
+            {/if}
+        </section>
+    {/if}
+
     <!-- Side panel -->
-    <section id="sidePanel" class={{ openPanel }}>
+    <section
+        id="sidePanel"
+        class={{ openPanel }}
+        use:clickOutside={() => {
+            openPanel = false;
+        }}
+    >
         <div id="sidePanel__topBar">
             <button aria-label="Close panel" onclick={() => (openPanel = false)}
                 ><Icon name="xmark" />
@@ -65,16 +113,42 @@
         </div>
 
         <div id="sidePanel__body" class="buttonList">
-            <IconLink label="Discover" icon="world" link="/discover" />
-            <IconLink label="Home" icon="home" link="/home" />
-            <IconLink label="Learn" icon="book" link="/tutorial" />
+            <IconLink
+                label="Discover"
+                icon="world"
+                link="/discover"
+                bind:openedMenu={openPanel}
+            />
+            <IconLink
+                label="Home"
+                icon="home"
+                link="/home"
+                bind:openedMenu={openPanel}
+            />
+            <IconLink
+                label="Learn"
+                icon="book"
+                link="/tutorial"
+                bind:openedMenu={openPanel}
+            />
             {#if data.user}
-                <IconLink label="Account" icon="login" link="/account" />
+                <IconLink
+                    label="Account"
+                    icon="account"
+                    link="/account"
+                    bind:openedMenu={openPanel}
+                />
             {:else}
-                <IconLink label="Login" icon="login" link="/login" />
+                <IconLink
+                    label="Login"
+                    icon="account"
+                    link="/login"
+                    bind:openedMenu={openPanel}
+                />
             {/if}
         </div>
     </section>
+    <div id="sidePanel__backdrop"></div>
 </header>
 
 {@render children()}

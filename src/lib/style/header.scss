@@ -7,7 +7,7 @@
 }
 
 body {
-    position:static;
+    position: static;
     padding-top: variables.$header-size !important;
 }
 
@@ -47,7 +47,8 @@ header {
         transition: cubic-bezier(0.215, 0.610, 0.355, 1) .2s;
     }
 
-    & button, a {
+    & button,
+    a {
         @include mixins.simple-button();
 
         background-color: colors.$header-fg;
@@ -131,7 +132,39 @@ header {
         }
     }
 
-    &>#sidePanel {
+    >#accountPanel {
+        position: absolute;
+        right: .4em;
+        top: 100%;
+
+        gap: .2em;
+
+        padding: .3em;
+
+        >hr {
+            border-color: colors.$border-mid;
+            width: 80%;
+        }
+
+        >#accountPanel__username {
+            text-align: center;
+            font-weight: bold;
+
+            font-size: 1.2em;
+            margin: .2em;
+
+            &::before {
+                content: '@';
+                color: colors.$text-passive;
+            }
+        }
+
+        .red * {
+            color: colors.$error-fg !important;
+        }
+    }
+
+    >#sidePanel {
         box-sizing: border-box;
         position: absolute;
 
@@ -148,12 +181,11 @@ header {
 
         z-index: 100;
 
-        &::before {
+        +#sidePanel__backdrop {
             content: '';
 
             top: 0;
-            left: 100%;
-            z-index: -1000;
+            left: 0;
 
             position: fixed;
             width: 100vw;
@@ -177,7 +209,7 @@ header {
             z-index: -999;
         }
 
-        &>#sidePanel__topBar {
+        >#sidePanel__topBar {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -195,7 +227,7 @@ header {
             }
         }
 
-        > #sidePanel__body {
+        >#sidePanel__body {
             padding: 1em;
             padding-top: .5em;
         }
@@ -203,11 +235,9 @@ header {
         &.openPanel {
             translate: 0 0;
 
-            &::before {
+            +#sidePanel__backdrop {
                 background-color: #00000088;
                 pointer-events: all;
-
-                left: 0;
             }
         }
     }

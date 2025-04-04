@@ -3,11 +3,6 @@
     import { enhance } from "$app/forms";
 
     let { children } = $props();
-
-    let loginParams = $state({
-        username: null,
-        password: null,
-    });
 </script>
 
 <main id="login__main">

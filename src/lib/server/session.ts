@@ -100,7 +100,7 @@ export type SessionValidationResult =
 
 
 /**
- * Sets the token for a 
+ * Sets the token for an active user session
  * @param event Request event
  * @param token Session token
  * @param expiresAt Date of validity of the session
@@ -114,6 +114,10 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
     });
 }
 
+/**
+ * Removes the session token coookie
+ * @param event 
+ */
 export function deleteSessionTokenCookie(event: RequestEvent): void {
     event.cookies.set("session", "", {
         httpOnly: true,
