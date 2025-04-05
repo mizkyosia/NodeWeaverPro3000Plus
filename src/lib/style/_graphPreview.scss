@@ -107,3 +107,12 @@
 
 
 }
+
+.previewList {
+    @include common-graph-list;
+
+    justify-content: center;
+
+    padding: 1em;
+    flex-wrap: wrap;
+}

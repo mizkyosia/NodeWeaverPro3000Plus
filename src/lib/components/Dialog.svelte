@@ -1,15 +1,28 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     let {
-        title,
+        title = "Dialog",
         description = "",
         show = $bindable(),
-        error = $bindable(),
-        onComplete = null,
-        onCancel = null,
+        action = "default",
+        confirm = "Confirm",
         children,
+        method = "post",
+        onValidate,
+    }: {
+        title?: string;
+        description?: string;
+        show: boolean;
+        action?: string;
+        confirm?: string;
+        children?: Snippet;
+        method?: "post" | "dialog";
+        onValidate?: () => void;
     } = $props();
 
     let dialog: HTMLDialogElement | undefined = $state();
+    let submit: HTMLElement | undefined = $state();
 
     $effect(() => {
         if (show) dialog?.showModal();
@@ -22,30 +35,33 @@
         bind:this={dialog}
         onclose={() => {
             show = false;
-            onCancel?.();
         }}
     >
-        <h4>{title}</h4>
+        {#if title}
+            <h4>{@html title}</h4>
+        {/if}
         {#if description}
-            <p>{description}</p>
+            <p>{@html description}</p>
         {/if}
-        {#if error}
-            <span class="error">All fields must be completed !</span>
-        {/if}
-        <form method="dialog">
-            {@render children()}
+        <form {method} {action}>
+            {@render children?.()}
 
             <div>
+                <input
+                    type="submit"
+                    style="display: none;"
+                    bind:this={submit}
+                />
                 <button
                     onclick={() => {
+                        submit?.click();
                         show = false;
-                        onComplete?.();
-                    }}>Confirm</button
+                        onValidate?.();
+                    }}>{confirm}</button
                 >
                 <button
                     onclick={() => {
                         show = false;
-                        onCancel?.();
                     }}
                     >Cancel
                 </button>

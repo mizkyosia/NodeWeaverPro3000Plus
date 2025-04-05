@@ -76,7 +76,6 @@ model Collection {
     createdAt   DateTime @default(now())
     updatedAt   DateTime
     authorId    Int?
-    userId      Int?
     public      Boolean
 
     author      User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)

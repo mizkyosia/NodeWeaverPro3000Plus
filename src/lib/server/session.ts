@@ -106,7 +106,7 @@ export type SessionValidationResult =
  * @param expiresAt Date of validity of the session
  */
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
-    event.cookies.set("session", token, {
+    event.cookies.set("nw-session", token, {
         httpOnly: true,
         sameSite: "lax",
         expires: expiresAt,
@@ -119,7 +119,7 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
  * @param event 
  */
 export function deleteSessionTokenCookie(event: RequestEvent): void {
-    event.cookies.set("session", "", {
+    event.cookies.set("nw-session", "", {
         httpOnly: true,
         sameSite: "lax",
         maxAge: 0,

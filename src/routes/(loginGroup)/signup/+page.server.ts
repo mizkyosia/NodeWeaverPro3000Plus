@@ -16,9 +16,6 @@ async function action(event: RequestEvent) {
         passwordCheck = formData.get("passwordConfirm"),
         username = formData.get("username")?.toString();
 
-
-    console.log("Received form : ", formData, password, passwordCheck);
-
     let formattedData = {
         email: email ?? '',
         username: username ?? '',

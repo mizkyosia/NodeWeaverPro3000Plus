@@ -78,6 +78,19 @@ a {
 
     &>span {
         font-size: 1.5em;
+
+    }
+
+    &.red {
+
+        &,
+        & * {
+            color: colors.$error-fg !important;
+        }
+
+        &:hover {
+            background-color: colors.$error-bg;
+        }
     }
 
     &>img,
@@ -92,18 +105,10 @@ a {
     background-color: transparent !important;
     text-align: center;
 
-    text-shadow: 0 0 0 white;
-
-    &:has(button) {
-        box-shadow: 0 0 0 white;
-
-        &:hover {
-            box-shadow: 0 0 5px white;
-        }
-    }
+    filter: drop-shadow(0 0 0 white);
 
     &:hover {
-        text-shadow: 0 0 5px white;
+        filter: drop-shadow(0 0 5px white);
     }
 }
 
@@ -116,7 +121,8 @@ hr {
 
 input,
 button,
-textarea {
+textarea,
+select {
     background-color: colors.$input-bg;
 
     border: 2px solid colors.$border-mid;
@@ -129,13 +135,27 @@ textarea {
     &:not(input, textarea) {
         cursor: pointer;
 
-        background-color: colors.$button-inactive;
+        &:not(select) {
+            background-color: colors.$button-inactive;
+        }
 
-        &:hover {
-            background-color: colors.$button-hover;
+        &:hover:not(select[multiple=""]) {
+            filter: brightness(130%);
         }
     }
+}
 
+select {
+    font-size: 1em;
+    min-width: 15em;
+
+    & option {
+        background-color: inherit;
+    }
+
+    &[multiple] option:hover {
+        filter: brightness(130%);
+    }
 }
 
 textarea {
@@ -155,6 +175,10 @@ dialog,
     & h4 {
         margin: 0;
         font-size: 1.35em;
+    }
+
+    p {
+        margin: 0;
     }
 
     &::backdrop {
@@ -244,7 +268,8 @@ svg {
             z-index: 50;
             color: colors.$text-passive;
 
-            &:has(+ :placeholder-shown:not(:focus-visible)) {
+            &:has(+ :placeholder-shown:not(:focus-visible)),
+            &.forceAnim {
                 font-size: 1em;
                 top: 1.55em;
             }
@@ -255,7 +280,8 @@ svg {
 
         }
 
-        >input {
+        >input,
+        >textarea {
 
             &:focus-visible {
                 border-color: colors.$border-light;

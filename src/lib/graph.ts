@@ -1,28 +1,28 @@
-interface coordonate{
-    x : number; //float
-    y : number; //float
+interface coordonate {
+    x: number; //float
+    y: number; //float
 }
 
-class Graph{
+class Graph {
 
-    private nodeCoordonate : coordonate[];
-    private matrix : number[][];
-    private numberNode : number;
+    private nodeCoordonate: coordonate[];
+    private matrix: number[][];
+    private numberNode: number;
 
     //default constructor
-    constructor(){
+    constructor() {
         //initialisation
         this.numberNode = 0;
-        this.matrix = []; 
+        this.matrix = [];
         this.nodeCoordonate = [];
 
     }
 
     //method 
-    public addNode(xCoordonate : number, yCoordonate : number) {
-        let newPointCoordonate :coordonate = {x:xCoordonate, y:yCoordonate};
+    public addNode(xCoordonate: number, yCoordonate: number) {
+        let newPointCoordonate: coordonate = { x: xCoordonate, y: yCoordonate };
         let newNodeID = this.numberNode;
-        
+
         //mise a jour des varaibles 
         this.numberNode++;
         this.nodeCoordonate.push(newPointCoordonate);
@@ -33,14 +33,14 @@ class Graph{
         for (let i = 0; i < this.numberNode - 1; i++) {
             this.matrix[i].push(Infinity);
         }
-    } 
+    }
 
 
     //debug method
-    public printMatrix(){
-        for (let x:number = 0; x < this.numberNode; x++){
+    public printMatrix() {
+        for (let x: number = 0; x < this.numberNode; x++) {
             console.log("| ");
-            for (let y:number = 0; y < this.numberNode; y++){
+            for (let y: number = 0; y < this.numberNode; y++) {
                 console.log(this.matrix[y][x] + " ");
             }
             console.log(" |\n");

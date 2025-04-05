@@ -43,7 +43,7 @@ main#home {
             }
         }
 
-        &>#home__collectionBar {
+        >.home__collectionBar {
             font-size: .9em;
 
             display: flex;
@@ -55,16 +55,81 @@ main#home {
         // overflow-y: scroll;
     }
 
-    &>section {
+    >section#home__collectionDisplay {
         display: block;
         max-width: 100vw;
+        max-height: calc(100vh - variables.$header-size);
+
+        padding-right: 1.5em;
 
         flex-grow: 1;
 
         overflow-y: scroll;
     }
 
+    p {
+        margin: 0;
+    }
+
     h2 {
-        color: colors.$text-active;
+        margin: .5em 0;
+    }
+
+    hr {
+        border-radius: 10px;
+        border-color: colors.$border-light;
+        margin: 1em 0;
+    }
+
+    #collection__actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        margin-right: 1em;
+
+        gap: 2.5em;
+
+        h2 {
+            color: colors.$text-active;
+        }
+
+        div {
+            display: flex;
+            flex-direction: row;
+
+            gap: .7em;
+        }
+    }
+
+    .collection__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin: auto;
+        border: 5px dashed colors.$border-mid;
+        padding: 1em;
+        width: fit-content;
+
+        border-radius: 2em;
+
+        gap: 1em;
+
+        h3 {
+            font-size: 1.5em;
+            padding: 0;
+            margin: 0;
+        }
+
+        h4 {
+            color: colors.$text-passive;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        svg {
+            font-size: 2em;
+        }
     }
 }

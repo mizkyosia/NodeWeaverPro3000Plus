@@ -2,8 +2,6 @@
     import FormInput from "$lib/components/FormInput.svelte";
 
     const { form } = $props();
-
-    console.log("form data : ", form);
 </script>
 
 <h2>Create account</h2>

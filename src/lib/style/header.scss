@@ -158,10 +158,6 @@ header {
                 color: colors.$text-passive;
             }
         }
-
-        .red * {
-            color: colors.$error-fg !important;
-        }
     }
 
     >#sidePanel {

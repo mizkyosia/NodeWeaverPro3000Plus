@@ -13,7 +13,7 @@
         preload = true,
     }: {
         icon: keyof typeof icons;
-        label: string;
+        label?: string;
         link: string;
         red?: boolean;
         openedMenu?: boolean;
@@ -32,5 +32,7 @@
     data-sveltekit-reload={reload}
 >
     <Icon name={icon} />
-    <span>{label}</span>
+    {#if label}
+        <span>{label}</span>
+    {/if}
 </a>

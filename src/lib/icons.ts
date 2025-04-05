@@ -13,6 +13,8 @@ import plus from "$lib/img/icons/plus.svelte";
 import login from "$lib/img/icons/login.svelte";
 import logout from "$lib/img/icons/logout.svelte";
 import settings from "$lib/img/icons/gear.svelte";
+import trash from "$lib/img/icons/trash.svelte";
+import edit from "$lib/img/icons/edit.svelte";
 
 // Exports
 export {
@@ -29,5 +31,7 @@ export {
     plus,
     login,
     logout,
-    settings
+    settings,
+    trash,
+    edit
 }
