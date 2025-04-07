@@ -76,7 +76,7 @@
                     icon="trash"
                     label="Delete"
                     action={() => (deleteDialog = true)}
-                    red
+                    cssClass={["red"]}
                 />
             </div>
         {/if}

@@ -102,7 +102,7 @@ header {
 
     & img,
     svg {
-        height: 2em;
+        height: 2em !important;
         aspect-ratio: 1;
     }
 
@@ -178,19 +178,7 @@ header {
         z-index: 100;
 
         +#sidePanel__backdrop {
-            content: '';
-
-            top: 0;
-            left: 0;
-
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-
-            background-color: transparent;
-            overflow: hidden;
-            transition: cubic-bezier(0.215, 0.610, 0.355, 1) .2s;
+            @include mixins.backdrop();
         }
 
         &::after {

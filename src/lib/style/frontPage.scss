@@ -1,0 +1,5 @@
+@use "colors";
+
+h2 {
+    color: colors.$text-passive;
+}

@@ -18,19 +18,19 @@ enum Role {
     ADMIN
 }
 
-enum ProfileVisibility {
+enum Visibility {
     PUBLIC
     RESTRICTED
     PRIVATE
 }
 
 model User {
-    id           Int               @id @default(autoincrement())
-    name         String            @unique
+    id           Int        @id @default(autoincrement())
+    name         String     @unique
     passwordHash String
-    email        String            @unique
-    joinedAt     DateTime          @default(now())
-    visibility   ProfileVisibility @default(PUBLIC)
+    email        String     @unique
+    joinedAt     DateTime   @default(now())
+    visibility   Visibility @default(PUBLIC)
 
     sessions              Session[]
     graphs                Graph[]      @relation("GraphAuthor")
@@ -44,13 +44,13 @@ model Graph {
     id          Int      @id @default(autoincrement())
     title       String   @db.VarChar(255)
     createdAt   DateTime @default(now())
-    updatedAt   DateTime
+    updatedAt   DateTime @updatedAt
     description String   @db.LongText
     authorId    Int?
     public      Boolean
     data        Json
 
-    user        User?        @relation("GraphAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
+    author      User?        @relation("GraphAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
     favorited   User[]       @relation("Favorites")
     ratings     Rating[]     @relation("GraphRatings")
     collections Collection[] @relation("CollectionGraphs")
@@ -65,18 +65,18 @@ model Rating {
     description String   @db.MediumText
     rating      Int
 
-    post   Graph @relation("GraphRatings", references: [id], fields: [postId], onDelete: Cascade)
+    graph  Graph @relation("GraphRatings", references: [id], fields: [postId], onDelete: Cascade)
     author User? @relation("RatingAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
 }
 
 model Collection {
-    id          Int      @id @default(autoincrement())
-    title       String   @db.VarChar(255)
-    description String   @db.MediumText
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime
+    id          Int        @id @default(autoincrement())
+    title       String     @db.VarChar(255)
+    description String     @db.MediumText
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
     authorId    Int?
-    public      Boolean
+    visibility  Visibility @default(PUBLIC)
 
     author      User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
     graphs      Graph[] @relation("CollectionGraphs")

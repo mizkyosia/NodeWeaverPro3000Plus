@@ -7,18 +7,18 @@
         icon,
         label,
         link,
-        red = false,
         openedMenu = $bindable(),
         reload = false,
         preload = true,
+        cssClass = [],
     }: {
         icon: keyof typeof icons;
         label?: string;
         link: string;
-        red?: boolean;
         openedMenu?: boolean;
         reload?: boolean;
         preload?: boolean;
+        cssClass?: any[];
     } = $props();
 
     const selected = $derived(page.route.id == link);
@@ -26,7 +26,7 @@
 
 <a
     href={link}
-    class={["iconLink", { selected }, { red }]}
+    class={["iconLink", { selected }].concat(cssClass)}
     onclick={() => (openedMenu = false)}
     data-sveltekit-preload-data={preload ? "hover" : "off"}
     data-sveltekit-reload={reload}

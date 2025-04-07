@@ -2,6 +2,50 @@ import { prisma } from "$lib/server/session";
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, RequestEvent } from "./$types";
 
+export const load = async ({ locals }) => {
+    return {
+        homeGraphs: {
+            // Last graphs edited by the user
+            lastUpdated: await prisma.graph.findMany({
+                orderBy: {
+                    updatedAt: 'desc'
+                },
+                where: {
+                    authorId: locals.user?.id
+                },
+                include: {
+                    author: {
+                        select: {
+                            name: true,
+                            id: true
+                        }
+                    }
+                },
+                take: 10
+            }),
+            // Graphs authored by and favorited by the user
+            favorites: await prisma.graph.findMany({
+                where: {
+                    authorId: locals.user?.id,
+                    favorited: {
+                        some: {
+                            id: locals.user?.id
+                        }
+                    }
+                },
+                include: {
+                    author: {
+                        select: {
+                            name: true,
+                            id: true
+                        }
+                    }
+                }
+            })
+        }
+    }
+}
+
 export const actions: Actions = {
     addCollection: async (event: RequestEvent) => {
         const formData = await event.request.formData();
@@ -26,7 +70,6 @@ export const actions: Actions = {
                 title: formattedData.title,
                 description: formattedData.description,
                 updatedAt: new Date(Date.now()),
-                public: formattedData.public
             }
         });
 

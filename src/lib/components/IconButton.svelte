@@ -6,18 +6,21 @@
         icon,
         label,
         action,
-        red = false,
         selected = $bindable(),
+        cssClass = [],
     }: {
         icon: keyof typeof icons;
         label?: string;
-        action: () => void;
-        red?: boolean;
+        action?: () => void;
         selected?: boolean;
+        cssClass?: any[];
     } = $props();
 </script>
 
-<button onclick={action} class={["iconLink", { selected }, { red }]}>
+<button
+    onclick={action}
+    class={["iconLink", { selected }].concat(cssClass)}
+>
     <Icon name={icon} />
     {#if label}
         <span>{label}</span>

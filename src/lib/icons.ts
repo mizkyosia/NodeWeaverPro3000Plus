@@ -15,6 +15,7 @@ import logout from "$lib/img/icons/logout.svelte";
 import settings from "$lib/img/icons/gear.svelte";
 import trash from "$lib/img/icons/trash.svelte";
 import edit from "$lib/img/icons/edit.svelte";
+import starFilled from "./img/icons/starFilled.svelte";
 
 // Exports
 export {
@@ -33,5 +34,6 @@ export {
     logout,
     settings,
     trash,
-    edit
+    edit,
+    starFilled,
 }

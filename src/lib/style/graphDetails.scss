@@ -1,0 +1,49 @@
+@use "colors";
+
+#graphDetails {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 1000;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15em;
+    box-sizing: border-box;
+
+    #graphDetails__inner {
+        background-color: colors.$header-bg;
+        padding: 1.5em;
+
+        border-radius: 2em;
+
+        #graphDetails__actions {
+            display: flex;
+            flex-direction: row;
+
+            // justify-content: space-between;
+            align-items: center;
+            gap: 1.4em;
+
+            >h2 {
+                margin: 0;
+            }
+
+            >span {
+                display: flex;
+                flex-direction: row;
+
+                font-size: 1.3em;
+
+                gap: .2em;
+            }
+        }
+    }
+
+    .backdrop {
+        z-index: -1;
+    }
+}

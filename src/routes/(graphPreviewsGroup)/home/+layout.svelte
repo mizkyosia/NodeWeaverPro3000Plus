@@ -8,7 +8,7 @@
     import "$lib/style/home.scss";
     import Icon from "$lib/components/Icon.svelte";
     import FormInput from "$lib/components/FormInput.svelte";
-
+    
     let addingCollection = $state(false);
 </script>
 

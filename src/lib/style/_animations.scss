@@ -1,0 +1,84 @@
+@use "colors";
+
+@keyframes rotate4 {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash4 {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 90, 200;
+        stroke-dashoffset: -35px;
+    }
+
+    100% {
+        stroke-dashoffset: -125px;
+    }
+}
+
+@keyframes loading {
+    0% {
+        left: 0;
+        top: 0;
+    }
+
+    12.5% {
+        left: 0;
+        top: 0;
+    }
+
+    25% {
+        left: 60%;
+        top: 0;
+    }
+
+    37.5% {
+        left: 60%;
+        top: 0;
+    }
+
+    50% {
+        left: 60%;
+        top: 60%;
+    }
+
+    62.5% {
+        left: 60%;
+        top: 60%;
+    }
+
+    75% {
+        left: 0;
+        top: 60%;
+    }
+
+    87.5% {
+        left: 0;
+        top: 60%;
+    }
+
+    100% {
+        left: 0;
+        top: 0;
+    }
+}
+
+@keyframes colorChange {
+    0% {
+        background-color: colors.$border-mid;
+    }
+
+    50% {
+        background-color: colors.$header-bg;
+    }
+
+    100% {
+        background-color: colors.$border-mid;
+    }
+}

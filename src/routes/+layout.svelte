@@ -12,6 +12,7 @@
 
     // Lib imports
     import { clickOutside } from "$lib/clickOutside";
+    import IconButton from "$lib/components/IconButton.svelte";
 
     // Props
     const { children, data } = $props();
@@ -23,9 +24,11 @@
 
 <header>
     <div>
-        <button aria-label="Menu" onclick={() => (openPanel = true)}>
-            <Icon name="menu" />
-        </button>
+        <IconButton
+            action={() => (openPanel = true)}
+            icon="menu"
+            cssClass={["alt"]}
+        />
         <div id="header__routeDisplay">
             {#each headerState.path as part, i}
                 <a href={part.url}>{part.name}</a>
@@ -50,13 +53,11 @@
                 Guest
             {/if}
         </span>
-        <button
-            class="header__account"
-            aria-label="Account button"
-            onclick={() => (openAccountPanel = !openAccountPanel)}
-        >
-            <Icon name="account" />
-        </button>
+        <IconButton
+            cssClass={["alt"]}
+            icon="account"
+            action={() => (openAccountPanel = !openAccountPanel)}
+        />
     </div>
 
     <!-- Account info panel -->
@@ -81,7 +82,7 @@
                     label="Log out"
                     icon="logout"
                     link="/logout"
-                    red
+                    cssClass={["red"]}
                     reload={true}
                     preload={false}
                     bind:openedMenu={openAccountPanel}
@@ -106,9 +107,11 @@
         }}
     >
         <div id="sidePanel__topBar">
-            <button aria-label="Close panel" onclick={() => (openPanel = false)}
-                ><Icon name="xmark" />
-            </button>
+            <IconButton
+                action={() => (openPanel = false)}
+                icon="xmark"
+                cssClass={["alt"]}
+            />
             <span>Navigate</span>
         </div>
 

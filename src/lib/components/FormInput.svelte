@@ -15,7 +15,7 @@
         name: string;
         title: string;
         value?: string | null;
-        type: HTMLInputTypeAttribute | "textarea" | "select" | "multiselect";
+        type: HTMLInputTypeAttribute | "textarea" | "select";
         required?: boolean;
         error?: string | null;
         forceAnim?: boolean;
@@ -23,8 +23,6 @@
     } = $props();
 
     if (type == "select") forceAnim = true;
-
-    const condition = type == "multiselect";
 </script>
 
 <div class="formInput">
@@ -34,10 +32,6 @@
             <textarea bind:value {name} {required} placeholder=" "></textarea>
         {:else if type == "select"}
             <select bind:value {name} {required}>
-                {@render children?.()}
-            </select>
-        {:else if type == "multiselect"}
-            <select multiple bind:value {name} {required}>
                 {@render children?.()}
             </select>
         {:else}

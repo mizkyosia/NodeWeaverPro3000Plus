@@ -21,3 +21,21 @@
         filter: brightness(80%);
     }
 }
+
+@mixin backdrop() {
+    top: 0;
+    left: 0;
+
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+
+    background-color: transparent;
+    overflow: hidden;
+    transition: cubic-bezier(0.215, 0.610, 0.355, 1) .2s;
+
+    &.active {
+        background-color: rgba($color: #000000, $alpha: 0.45);
+    }
+}
