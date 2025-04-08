@@ -59,13 +59,13 @@ export class Graph {
         let ret : Node = new Node;
         ret.setName("Node Not Found");
         return ret;
-
     }
 
-    public addNode(x: number, y: number): Node {
+    public addNode(name: string = 'default', x: number, y: number): Node {
         const newNode = new Node();
         newNode.setCoord(x, y);
         newNode.setId(this.nodes.length);
+        newNode.setName(name);
         this.nodes.push(newNode);
 
         // Ajout ligne et colonne
