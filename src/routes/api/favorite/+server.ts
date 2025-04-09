@@ -1,10 +1,13 @@
+import { _getCollectionDetails } from '$api/collectionDetails/+server.js';
+import { _getGraphDetails } from '$api/graphDetails/+server.js';
 import { prisma } from '$lib/server/session';
 import { json } from '@sveltejs/kit'
 
 export const POST = async ({ request, locals }) => {
-    const { graphID, favorite }: {
-        graphID: number;
+    const { ID, favorite, collection }: {
+        ID: number;
         favorite: boolean;
+        collection: boolean;
     } = await request.json();
 
     if (locals.user == null) return json({}, { status: 501 });
@@ -17,23 +20,29 @@ export const POST = async ({ request, locals }) => {
         disconnect: {
             id: locals.user.id
         }
-    })
+    });
 
-    let graph = await prisma.graph.update({
-        where: {
-            id: graphID
-        },
-        data: {
-            favorited: queryPart
-        },
-        include: {
-            favorited: {
-                where: {
-                    id: locals.user.id
-                }
+    if (collection) {
+        await prisma.collection.update({
+            where: {
+                id: ID
+            },
+            data: {
+                subscribers: queryPart
             }
-        }
-    })
+        });
 
-    return json({ favorited: graph.favorited.length > 0 }, { status: 200 });
+        return json(await _getCollectionDetails(ID, locals), { status: 200 });
+    } else {
+        await prisma.graph.update({
+            where: {
+                id: ID
+            },
+            data: {
+                favorited: queryPart
+            }
+        });
+
+        return json(await _getGraphDetails(ID, locals), { status: 200 });
+    }
 }

@@ -3,6 +3,7 @@
 @use "colors";
 @use "mixins";
 @use "animations";
+@use "carousel";
 @use "sass:math";
 
 body,
@@ -18,6 +19,11 @@ html {
     transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .4s;
 }
 
+a {
+    color: colors.$link-color;
+    text-decoration: none;
+}
+
 main {
     display: flex;
     flex-direction: column;
@@ -31,7 +37,7 @@ h1 {
     color: white;
     font-size: 5em;
     text-shadow: 0 0 5px aquamarine;
-
+    text-align: center;
 }
 
 h2 {
@@ -148,10 +154,10 @@ svg {
             stroke: colors.$error-fg !important;
         }
 
-        &.starFilled,
-        &.starFilled * {
-            stroke: colors.$border-mid !important;
-            fill: colors.$border-mid;
+        &.filled,
+        &.filled * {
+            stroke: colors.$link-color !important;
+            fill: colors.$link-color;
         }
     }
 
@@ -218,5 +224,50 @@ svg {
             animation-delay: calc(-3 * $animation-time / 4), - math.random() * $animation-time;
         }
 
+    }
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    margin: .4em;
+    gap: .6em;
+    justify-content: start;
+
+    * {
+        color: colors.$text-mid;
+    }
+
+    >hr {
+        width: .3em;
+        height: .3em;
+
+        flex-grow: 0;
+        background-color: colors.$text-passive !important;
+        border-color: colors.$text-passive !important;
+
+        border-radius: 1em;
+
+        margin: 0;
+    }
+
+    &.alt {
+        >hr {
+            height: 0px;
+            border-width: 1px;
+
+            width: 5em;
+
+            &:last-of-type {
+                flex-grow: 3;
+            }
+        }
+    }
+
+    b {
+        text-shadow: 0 0 5px colors.$text-active;
+        color: colors.$text-active;
     }
 }

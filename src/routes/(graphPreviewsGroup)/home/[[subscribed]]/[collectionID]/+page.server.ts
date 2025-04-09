@@ -15,7 +15,16 @@ async function collectionFromParams(params: RouteParams, locals: App.Locals) {
                 }
             },
             include: {
-                graphs: true
+                graphs: {
+                    include: {
+                        author: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                }
             }
         })
     } else {
@@ -26,7 +35,16 @@ async function collectionFromParams(params: RouteParams, locals: App.Locals) {
                 authorId: locals.user?.id
             },
             include: {
-                graphs: true
+                graphs: {
+                    include: {
+                        author: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                }
             }
         })
     }
@@ -39,39 +57,5 @@ export async function load({ params, locals }) {
     return {
         collection,
         author: collection?.authorId == locals.user?.id
-    }
-}
-
-export const actions: Actions = {
-    delete: async ({ locals, params }) => {
-        const collection = await collectionFromParams(params, locals);
-
-        // If user is the author, successfully delete collection
-        if (collection && collection?.authorId == locals.user?.id) {
-            await prisma.collection.delete({
-                where: {
-                    id: collection.id
-                }
-            });
-            return redirect(302, '/home');
-        } else return fail(400, {});
-    },
-    edit: async ({ request, locals, params }) => {
-        const formData = await request.formData();
-
-        const collection = await collectionFromParams(params, locals);
-
-        // If user is the author, successfully update collection
-        if (collection && collection?.authorId == locals.user?.id) {
-            await prisma.collection.update({
-                where: {
-                    id: collection.id
-                },
-                data: {
-                    title: formData.get('title')?.toString() ?? collection.title,
-                    description: formData.get('description')?.toString() ?? collection.description,
-                }
-            });
-        } else return fail(400, {});
     }
 }

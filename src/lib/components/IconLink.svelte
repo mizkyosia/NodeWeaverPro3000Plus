@@ -6,7 +6,7 @@
     let {
         icon,
         label,
-        link,
+        link = $bindable(),
         openedMenu = $bindable(),
         reload = false,
         preload = true,

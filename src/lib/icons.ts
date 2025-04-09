@@ -15,7 +15,10 @@ import logout from "$lib/img/icons/logout.svelte";
 import settings from "$lib/img/icons/gear.svelte";
 import trash from "$lib/img/icons/trash.svelte";
 import edit from "$lib/img/icons/edit.svelte";
-import starFilled from "./img/icons/starFilled.svelte";
+import circlePlus from "./img/icons/circlePlus.svelte";
+import rewind from "./img/icons/rewind.svelte";
+import heart from "./img/icons/heart.svelte";
+import heartFilled from "./img/icons/heartFilled.svelte";
 
 // Exports
 export {
@@ -35,5 +38,8 @@ export {
     settings,
     trash,
     edit,
-    starFilled,
+    circlePlus,
+    rewind,
+    heart,
+    heartFilled
 }

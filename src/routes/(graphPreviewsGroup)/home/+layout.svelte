@@ -30,7 +30,7 @@
     <nav class="buttonList">
         <input id="home__search" type="text" placeholder="Search..." />
         <IconLink label="Home" icon="home" link="/home" />
-        <IconLink label="Favorites" icon="star" link="/home/favorites" />
+        <IconLink label="Favorites" icon="heart" link="/home/favorites" />
 
         <!-- Collections authored by this user -->
         <div class="home__collectionBar">

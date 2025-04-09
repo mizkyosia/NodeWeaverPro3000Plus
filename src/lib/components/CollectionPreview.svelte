@@ -1,10 +1,10 @@
 <!-- 
 @component
-Used for displaying graph "previews", including name, author, time and an image
+Used for displaying collection "previews", including name, author, last update & number of graphs
 -->
 <script lang="ts">
     import IconLink from "./IconLink.svelte";
-    import { graphDetailsState } from "../previewStates.svelte";
+    import { collectionDetailsState } from "../previewStates.svelte";
 
     const {
         data,
@@ -18,6 +18,9 @@ Used for displaying graph "previews", including name, author, time and an image
                 id: number;
                 name: string;
             } | null;
+            _count: {
+                graphs: number;
+            };
         };
     } = $props();
 
@@ -26,23 +29,23 @@ Used for displaying graph "previews", including name, author, time and an image
             ? data.description.substring(0, 100) + "..."
             : data.description;
 
-    // Open graph details panel, and fetch necessary data
-    async function openGraphDetails() {
-        graphDetailsState.show = true;
+    // Open collection details panel, and fetch necessary data
+    async function openCollectionDetails() {
+        collectionDetailsState.show = true;
 
-        if (graphDetailsState.data?.id == data.id) return;
+        if (collectionDetailsState.data?.id == data.id) return;
 
-        graphDetailsState.data = undefined;
+        collectionDetailsState.data = undefined;
 
-        fetch(`/api/graphDetails?graphID=${data.id}`, {
+        fetch(`/api/collectionDetails?collectionID=${data.id}`, {
             method: "GET",
         }).then(async (res) => {
-            graphDetailsState.data = await res.json();
+            collectionDetailsState.data = await res.json();
         });
     }
 </script>
 
-<button class="graphPreview" onclick={openGraphDetails}>
+<button class="graphPreview" onclick={openCollectionDetails}>
     <h4>{data.title}</h4>
     <p>{description}</p>
 

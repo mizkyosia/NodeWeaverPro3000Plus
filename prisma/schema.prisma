@@ -54,6 +54,8 @@ model Graph {
     favorited   User[]       @relation("Favorites")
     ratings     Rating[]     @relation("GraphRatings")
     collections Collection[] @relation("CollectionGraphs")
+
+    @@fulltext([title])
 }
 
 model Rating {
@@ -81,6 +83,8 @@ model Collection {
     author      User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
     graphs      Graph[] @relation("CollectionGraphs")
     subscribers User[]  @relation("CollectionSubscriber")
+    
+    @@fulltext([title])
 }
 
 model Session {

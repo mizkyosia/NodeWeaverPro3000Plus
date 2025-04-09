@@ -1,17 +1,6 @@
-import type { $Enums, Collection, Graph } from "@prisma/client";
-
-export type GraphDetails = Graph & {
-    _count: {
-        ratings: number;
-        favorited: number;
-        collections: number;
-    }
-    author: {
-        name: string;
-        id: number;
-    } | null,
-    favorited: boolean;
-};
+import type { $Enums } from "@prisma/client";
+import type { _GraphDetails } from "$api/graphDetails/+server.ts";
+import type { _CollectionDetails } from "$api/collectionDetails/+server";
 
 export const collectionManagerState: {
     show: boolean;
@@ -30,7 +19,15 @@ export const collectionManagerState: {
 
 export const graphDetailsState: {
     show: boolean;
-    data?: GraphDetails;
+    data?: _GraphDetails;
+} = $state({
+    show: false,
+    data: undefined
+});
+
+export const collectionDetailsState: {
+    show: boolean;
+    data?: _CollectionDetails;
 } = $state({
     show: false,
     data: undefined

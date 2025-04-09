@@ -1,0 +1,34 @@
+.carousel {
+    --offset: 0%;
+    overflow: hidden;
+    padding: 1em 0;
+
+    >.carousel__inner {
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 1em;
+
+        >* {
+            translate: calc(var(--offset) - 100%) 0;
+
+            &:last-child {
+                opacity: 0;
+                pointer-events: none;
+
+            }
+        }
+    }
+
+    &.alt>.carousel__inner {
+        flex-direction: row-reverse;
+
+        >* {
+            translate: calc(var(--offset) + 100%) 0;
+        }
+
+    }
+}

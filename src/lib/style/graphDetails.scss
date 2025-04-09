@@ -20,25 +20,30 @@
 
         border-radius: 2em;
 
-        #graphDetails__actions {
+        >div {
             display: flex;
             flex-direction: row;
-
-            // justify-content: space-between;
             align-items: center;
-            gap: 1.4em;
 
-            >h2 {
-                margin: 0;
-            }
+            &#graphDetails__actions {
+                gap: 1.4em;
 
-            >span {
-                display: flex;
-                flex-direction: row;
+                >a {
+                    font-size: 1em;
+                }
 
-                font-size: 1.3em;
+                >h2 {
+                    margin: 0;
+                }
 
-                gap: .2em;
+                >span {
+                    display: flex;
+                    flex-direction: row;
+
+                    font-size: 1.3em;
+
+                    gap: .2em;
+                }
             }
         }
     }

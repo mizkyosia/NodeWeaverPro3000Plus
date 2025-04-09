@@ -1,3 +1,5 @@
+@use "colors";
+
 @mixin common-graph-list {
     padding: 2em;
     display: flex;
@@ -13,4 +15,71 @@
 
 .graphList {
     @include common-graph-list;
+}
+
+#search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .stats {
+        justify-content: center;
+    
+        hr {
+            width: 8em !important;
+            flex-grow: 0 !important;
+        }
+    }
+}
+
+#searchBar {
+    $shadow-size: 10px;
+
+    background-color: colors.$input-bg;
+    position: relative;
+    display: flex;
+    font-size: 1.5em;
+    justify-content: center;
+
+    width: fit-content;
+
+    overflow: hidden;
+
+    border-radius: 2em;
+
+    input {
+        font-size: 1.2em;
+        margin: 0;
+
+        width: 20em;
+
+        border: none;
+        outline: none;
+
+        &:focus-visible+span>.iconLink,
+        &+span:hover>.iconLink {
+            left: .5em;
+        }
+    }
+
+    &:has(input:focus-visible, .iconLink:hover) {
+        padding-left: 2.3em;
+
+        box-shadow: 0 0 $shadow-size colors.$border-mid;
+    }
+
+    >span {
+        overflow: hidden;
+    }
+
+    .iconLink {
+        position: absolute;
+
+        top: 50%;
+        left: -3em;
+
+        border-radius: 2em;
+        background-color: colors.$border-mid;
+        translate: 0 -50%;
+    }
 }

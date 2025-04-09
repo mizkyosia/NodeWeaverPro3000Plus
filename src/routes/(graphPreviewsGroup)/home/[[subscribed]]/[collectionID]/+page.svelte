@@ -1,6 +1,7 @@
 <script lang="ts">
     import Dialog from "$lib/components/Dialog.svelte";
     import FormInput from "$lib/components/FormInput.svelte";
+    import GraphPreview from "$lib/components/GraphPreview.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import IconButton from "$lib/components/IconButton.svelte";
 
@@ -23,24 +24,25 @@
 
     // Dialog states
     let deleteDialog = $state(false),
-        editDialog = $state(false),
-        addDialog = $state(false);
+        editDialog = $state(false);
 </script>
 
 <!-- Delete dialog -->
 <Dialog
     title="Delete"
     description="Are you sure you want to delete this collection ? This operation cannot be undone"
-    action="?/delete"
+    action="/collection/{data.collection?.id}?/delete"
     bind:show={deleteDialog}
-></Dialog>
+>
+    <input type="hidden" value="/home" name="redirect" /></Dialog
+>
 
 <!-- Edit dialog -->
 <Dialog
     title="Edit"
     description="Change the title and/or description"
     confirm="Confirm changes"
-    action="?/edit"
+    action="/collection/{data.collection?.id}?/edit"
     bind:show={editDialog}
 >
     <FormInput
@@ -55,6 +57,7 @@
         type="textarea"
         value={data.collection?.description}
     />
+    <input type="hidden" value="/home/{data.collection?.id}" name="redirect"/>
 </Dialog>
 
 {#if data.collection == null}
@@ -82,15 +85,33 @@
         {/if}
     </div>
     <p>{data.collection.description}</p>
-    <hr />
+    <div class="stats alt">
+        <span><b>XYZ</b> graphs</span>
+        <hr />
+        <span><b>XYZ</b> followers</span>
+        <hr />
+        <span
+            >Last updated on <b
+                >{data.collection.updatedAt.toLocaleString("fr-FR", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                })}</b
+            ></span
+        >
+        <hr />
+    </div>
 
-    {#if data.collection.graphs.length > 0}
-        <div class="previewList"></div>
-    {:else}
-        <div class="collection__empty">
+    <div
+        class={data.collection.graphs.length > 0
+            ? "previewList"
+            : "collection__empty"}
+    >
+        {#each data.collection.graphs as graph}
+            <GraphPreview data={graph} />
+        {:else}
             <h3>This collection is empty !</h3>
             <h4>Start adding graphs now !</h4>
             <a href="/discover" class="slimButton"><Icon name="plus" /></a>
-        </div>
-    {/if}
+        {/each}
+    </div>
 {/if}

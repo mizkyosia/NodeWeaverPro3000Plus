@@ -6,7 +6,7 @@ TODO : Responsive style for both laptop and mobile rendering
 <script lang="ts">
     import Icon from "./Icon.svelte";
 
-    const { children, title, query = "" } = $props();
+    const { children = null, title, link = "" } = $props();
 
     let currentIndex = $state(0);
 </script>
@@ -15,12 +15,12 @@ TODO : Responsive style for both laptop and mobile rendering
     <div class="previewSection__topBar">
         <span>{title}</span>
         <hr />
-        <a href={"/search?" + query}>See more</a>
+        <a href={link}>See more</a>
         <button
             onclick={() => (currentIndex -= 1)}
             aria-label="Scroll to previous"><Icon name="arrow" /></button
         >
-        <button onclick={() => (currentIndex -= 1)} aria-label="Scroll to next"
+        <button onclick={() => (currentIndex += 1)} aria-label="Scroll to next"
             ><Icon name="arrow" flipped /></button
         >
     </div>

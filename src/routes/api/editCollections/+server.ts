@@ -34,12 +34,14 @@ export async function POST({ request, locals }): Promise<Response> {
                     id: true,
                     name: true
                 }
+            },
+            favorited: {
+                where: {
+                    id: locals.user?.id
+                }
             }
         }
     });
 
-    console.log("Updated graph : ", result);
-
-
-    return json(result, { status: 201 })
+    return json({ ...result, favorited: result.favorited.length > 0 }, { status: 201 })
 }

@@ -17,13 +17,13 @@
 
 <PreviewSection title="Finish what you started">
     {#each data.homeGraphs.lastUpdated as graph}
-        <GraphPreview {graph} />
+        <GraphPreview data={graph} />
     {/each}
 </PreviewSection>
 
 <PreviewSection title="Your best work !">
     {#each data.homeGraphs.favorites as graph}
-        <GraphPreview {graph} />
+        <GraphPreview data={graph} />
     {/each}
 </PreviewSection>
 
