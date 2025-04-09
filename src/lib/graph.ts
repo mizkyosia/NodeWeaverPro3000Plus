@@ -1,21 +1,21 @@
-interface coordonate {
+interface Coordinates {
     x: number;
     y: number;
 }
 
 export class Node {
-    private coord: coordonate = { x: 0, y: 0 };
+    private coord: Coordinates = { x: 0, y: 0 };
     private name: string = "No Name";
     private idInMatrix: number = 0;
     private isValid: boolean = true;
 
-    constructor() {}
+    constructor() { }
 
     public setCoord(xCoordonate: number, yCoordonate: number) {
         this.coord = { x: xCoordonate, y: yCoordonate };
     }
 
-    public getCoord(): coordonate {
+    public getCoord(): Coordinates {
         return this.coord;
     }
 
@@ -48,15 +48,15 @@ export class Graph {
     private matrix: number[][] = [];
     private nodes: Node[] = [];
 
-    constructor() {}
+    constructor() { }
 
-    public getNodeByName(name : string) : Node {
-        for (let i = 0; i < this.nodes.length; i++){
-            if (this.nodes[i].getName() == name){
+    public getNodeByName(name: string): Node {
+        for (let i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i].getName() == name) {
                 return this.nodes[i];
             }
         }
-        let ret : Node = new Node;
+        let ret: Node = new Node;
         ret.setName("Node Not Found");
         return ret;
     }
@@ -83,19 +83,19 @@ export class Graph {
             console.error("Node is invalid or already removed");
             return;
         }
-    
+
         // Supprimer dans la matrice
         this.matrix.splice(id, 1);
         for (let i = 0; i < this.matrix.length; i++) {
             this.matrix[i].splice(id, 1);
         }
-    
+
         // Marquer le node comme invalide
         node.invalidate();
-    
+
         // Retirer le node de la liste des nœuds
         this.nodes = this.nodes.filter(n => n.getId() !== id);
-    
+
         // Décaler les IDs restants dans la liste des nœuds
         for (let i = 0; i < this.nodes.length; i++) {
             const n = this.nodes[i];
@@ -182,21 +182,21 @@ export class Graph {
             console.error("Invalid node(s)");
             return [];
         }
-    
+
         const startId = start.getId();
         const endId = end.getId();
         const n = this.nodes.length;
-    
+
         // Vérification si le graphe contient des nœuds
         if (n === 0) {
             console.error("Le graphe est vide.");
             return [];
         }
-    
+
         const dist = new Array(n).fill(Infinity);
         const prev = new Array(n).fill(-1);
         dist[startId] = 0;
-    
+
         for (let i = 0; i < n - 1; i++) {
             for (let u = 0; u < n; u++) {
                 for (let v = 0; v < n; v++) {
@@ -208,7 +208,7 @@ export class Graph {
                 }
             }
         }
-    
+
         // Vérification des cycles de poids négatif
         for (let u = 0; u < n; u++) {
             for (let v = 0; v < n; v++) {
@@ -219,14 +219,14 @@ export class Graph {
                 }
             }
         }
-    
+
         const path: number[] = [];
         for (let at = endId; at !== -1; at = prev[at]) {
             path.push(at);
         }
         path.reverse();
-    
+
         return path[0] === startId ? path : [];
     }
-    
+
 }
