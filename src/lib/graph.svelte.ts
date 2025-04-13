@@ -1,11 +1,12 @@
-interface Coordinates {
+export interface Coordinates {
     x: number;
     y: number;
 }
 
 export class Node {
-    private coord: Coordinates = { x: 0, y: 0 };
-    private name: string = "No Name";
+    public coord: Coordinates = $state({ x: 0, y: 0 });
+    public name: string = "No Name";
+    public selected: boolean = $state(false);
     private idInMatrix: number = 0;
     private isValid: boolean = true;
 
@@ -45,10 +46,11 @@ export class Node {
 }
 
 export class Graph {
-    private matrix: number[][] = [];
-    private nodes: Node[] = [];
+    public matrix: number[][] = $state([]);
+    public nodes: Node[] = $state([]);
 
-    constructor() { }
+    constructor() {
+    }
 
     public getNodeByName(name: string): Node {
         for (let i = 0; i < this.nodes.length; i++) {
@@ -61,7 +63,7 @@ export class Graph {
         return ret;
     }
 
-    public addNode(name: string = 'default', x: number, y: number): Node {
+    public addNode(x: number, y: number, name: string = 'default'): Node {
         const newNode = new Node();
         newNode.setCoord(x, y);
         newNode.setId(this.nodes.length);
@@ -73,8 +75,11 @@ export class Graph {
         for (let i = 0; i < this.nodes.length - 1; i++) {
             this.matrix[i].push(Infinity);
         }
-
         return newNode;
+    }
+
+    public addNodeFromCoords(pos: Coordinates, name: string = "default") {
+        this.addNode(pos.x, pos.y, name);
     }
 
     public removeNode(node: Node): void {
@@ -124,11 +129,40 @@ export class Graph {
     }
 
     public consolePrintMatrix(): void {
-        console.table(this.matrix);
+        console.table($state.snapshot(this.matrix));
     }
 
     public getMatrix(): number[][] {
         return this.matrix;
+    }
+
+    public exportData() {
+        return {
+            matrix: $state.snapshot(this.matrix),
+            nodes: this.nodes.map(n => {
+                return {
+                    x: n.coord.x,
+                    y: n.coord.y,
+                    name: n.name
+                }
+            })
+        }
+    }
+
+    public static buildFromData(data: {
+        matrix: (number | null)[][];
+        nodes: {
+            x: number;
+            y: number;
+            name: string;
+        }[]
+    }): Graph {
+        const g = new Graph();
+        for (let n of data.nodes) {
+            g.addNode(n.x, n.y, n.name);
+        }
+        g.matrix = data.matrix.map(row => row.map(l => l == null ? Infinity : l));
+        return g;
     }
 
     public dijkstra(start: Node, end: Node): number[] {

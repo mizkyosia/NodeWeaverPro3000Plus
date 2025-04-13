@@ -1,0 +1,155 @@
+@use "variables";
+@use "colors";
+
+main#graph {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    height: calc(100vh - variables.$header-size);
+
+    section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#graphDisplay {
+    position: relative;
+    background-color: black;
+    flex-grow: 1;
+
+    border: 2px solid colors.$text-passive;
+
+    border-width: 0 2px;
+    // overflow: hidden;
+
+    height: unset;
+    width: unset;
+
+    &,
+    * {
+        transition: fill .1s linear, stroke .1s linear;
+    }
+
+    &.view {
+        circle {
+            stroke: white !important;
+            fill: white;
+        }
+
+        line {
+            stroke: colors.$text-passive;
+        }
+
+        circle, line {
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+
+    circle,
+    line {
+        cursor: pointer;
+        pointer-events: all;
+
+        &:hover,
+        &.selected {
+            stroke: white !important;
+            fill: white;
+        }
+
+        &.selected {
+            box-shadow: 2px 0 5px colors.$border-light;
+        }
+
+        &.phantom {
+            user-select: none;
+            pointer-events: none;
+        }
+    }
+
+    &.delete {
+
+        circle,
+        line {
+
+            &:hover,
+            &.selected {
+                stroke: colors.$error-fg !important;
+                fill: colors.$error-fg;
+            }
+        }
+    }
+
+    &.add {
+        cursor: crosshair;
+
+        circle, line {
+            pointer-events: none;
+        }
+    }
+
+    circle {
+        fill: colors.$text-passive;
+        stroke: none !important;
+    }
+
+    line {
+        stroke: colors.$text-mid !important;
+    }
+
+}
+
+#graphData,
+#graphActions {
+    padding: 1em;
+
+    overflow-y: scroll;
+
+    input {
+        border-radius: 3px;
+        border: none;
+
+        width: 3em;
+
+        &[type=text] {
+            width: 5em;
+        }
+
+        &[type=number] {
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        background-color: rgba(colors.$input-bg, $alpha: .5);
+    }
+}
+
+#graphActions__picker {
+    display: flex;
+    flex-direction: column;
+}
+
+
+table {
+    border-collapse: collapse;
+
+    td,
+    th {
+        padding: .3em;
+        border: 1px solid colors.$text-mid;
+    }
+
+    thead th {
+        background-color: colors.$header-fg;
+    }
+
+    tbody tr {
+        &:nth-child(2n) {
+            background-color: rgba(colors.$header-bg, $alpha: .5);
+        }
+    }
+}

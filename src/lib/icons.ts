@@ -19,6 +19,8 @@ import circlePlus from "./img/icons/circlePlus.svelte";
 import rewind from "./img/icons/rewind.svelte";
 import heart from "./img/icons/heart.svelte";
 import heartFilled from "./img/icons/heartFilled.svelte";
+import graphGeometry from "./img/icons/graph-geometry.svelte";
+import graphNetwork from "./img/icons/graph-network.svelte";
 
 // Exports
 export {
@@ -41,5 +43,7 @@ export {
     circlePlus,
     rewind,
     heart,
-    heartFilled
+    heartFilled,
+    graphGeometry,
+    graphNetwork
 }

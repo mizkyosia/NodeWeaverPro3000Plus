@@ -7,7 +7,7 @@
     const { children } = $props();
 
     let query = $state("");
-    let link = $derived("/discover/" + query);
+    let link = $derived("/discover/" + query + '/all');
 </script>
 
 <section id="search">

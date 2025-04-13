@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Graph } from '$lib/graph';
+    import { Graph } from '$lib/graph.svelte';
     import { onMount } from 'svelte';
 
     let graph: Graph;

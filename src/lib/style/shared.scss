@@ -266,7 +266,7 @@ svg {
         }
     }
 
-    b {
+    b, b * {
         text-shadow: 0 0 5px colors.$text-active;
         color: colors.$text-active;
     }

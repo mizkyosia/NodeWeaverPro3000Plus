@@ -1,7 +1,6 @@
 <!--
 @component
 Thin component wrapper around an svg icon. Simplifies managing different icons
-
 -->
 
 <script lang="ts">
