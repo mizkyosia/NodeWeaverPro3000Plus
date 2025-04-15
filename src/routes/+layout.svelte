@@ -40,7 +40,7 @@
     </div>
 
     <div>
-        <img src="/favicon.png" alt="logo" />
+        <Icon name="graphNetwork" />
         <span class="header__title">NodeWeaver</span>
     </div>
 

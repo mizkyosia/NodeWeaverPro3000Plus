@@ -4,6 +4,10 @@
     import type { SvelteSet } from "svelte/reactivity";
     import * as icons from "$lib/icons";
     import { headerState } from "$lib/headerState.svelte";
+    import IconLink from "$lib/components/IconLink.svelte";
+    import IconButton from "$lib/components/IconButton.svelte";
+    import CollapseSection from "$lib/components/CollapseSection.svelte";
+    import Dialog from "$lib/components/Dialog.svelte";
 
     const { data } = $props();
 
@@ -45,9 +49,20 @@
             height: number;
         };
         selectedNodes: SvelteSet<Node>;
+        selectedLinks: SvelteSet<string>;
+        display: {
+            nodes: boolean;
+            links: boolean;
+        };
+        inputs: {
+            ctrl: boolean;
+            shift: boolean;
+            mouseDown: boolean;
+            movingNode: boolean;
+        };
         clickHandler: (e: MouseEvent) => void;
-        viewToGraph: (pos: Coordinates) => Coordinates;
-        graphToView: (pos: Coordinates) => Coordinates;
+        viewToGraph: (pos: Coordinates, center?: boolean) => Coordinates;
+        graphToView: (pos: Coordinates, center?: boolean) => Coordinates;
         tools: {
             all: {
                 name: string;
@@ -107,8 +122,19 @@
             // Perform action
             if (context.tools.selected == "add") {
                 context.graph.addNodeFromCoords(
-                    context.viewToGraph({ x: e.layerX, y: e.layerY }),
+                    context.viewToGraph(
+                        {
+                            x: e.layerX,
+                            y: e.layerY,
+                        },
+                        true,
+                    ),
                 );
+            } else if (context.inputs.movingNode) {
+                console.log(":3");
+            } else {
+                context.selectedNodes.forEach((n) => (n.selected = false));
+                context.selectedLinks.clear();
             }
         };
 
@@ -124,7 +150,11 @@
                 all: [],
                 selected: "view",
             };
-            context.clickHandler = () => {};
+            context.clickHandler = () => {
+                if (context.inputs.movingNode) return;
+                context.selectedLinks.clear();
+                context.selectedNodes.forEach((n) => (n.selected = false));
+            };
             context.selectedNodes.forEach((n: any) => (n.selected = false));
 
             // Save graph when changing page
@@ -132,3 +162,28 @@
         };
     });
 </script>
+
+<div id="graphActions__picker">
+    <IconLink icon="view" label="View mode" link="./" />
+    <IconButton
+        icon="save"
+        label="Save"
+        action={() => saveGraph().then(() => alert("The graph has been saved"))}
+    />
+
+    <CollapseSection title="Tools" startOpened>
+        {#each context.tools.all as tool}
+            <IconButton
+                icon={tool.icon}
+                label={tool.name}
+                action={() => {
+                    context.tools.selected = tool.value;
+                    context.selectedNodes.forEach((n) => (n.selected = false));
+                }}
+                cssClass={[
+                    context.tools.selected == tool.value ? "selected" : "",
+                ]}
+            />
+        {/each}
+    </CollapseSection>
+</div>

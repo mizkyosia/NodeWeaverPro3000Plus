@@ -21,6 +21,9 @@ import heart from "./img/icons/heart.svelte";
 import heartFilled from "./img/icons/heartFilled.svelte";
 import graphGeometry from "./img/icons/graph-geometry.svelte";
 import graphNetwork from "./img/icons/graph-network.svelte";
+import arrowCollapse from "./img/icons/arrowCollapse.svelte";
+import view from "./img/icons/view.svelte";
+import save from "./img/icons/save.svelte";
 
 // Exports
 export {
@@ -45,5 +48,8 @@ export {
     heart,
     heartFilled,
     graphGeometry,
-    graphNetwork
+    graphNetwork,
+    arrowCollapse,
+    view,
+    save
 }

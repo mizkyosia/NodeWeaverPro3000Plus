@@ -63,7 +63,7 @@ export class Graph {
         return ret;
     }
 
-    public addNode(x: number, y: number, name: string = 'default'): Node {
+    public addNode(x: number, y: number, name: string = "node" + this.nodes.length): Node {
         const newNode = new Node();
         newNode.setCoord(x, y);
         newNode.setId(this.nodes.length);
@@ -78,7 +78,7 @@ export class Graph {
         return newNode;
     }
 
-    public addNodeFromCoords(pos: Coordinates, name: string = "default") {
+    public addNodeFromCoords(pos: Coordinates, name?: string) {
         this.addNode(pos.x, pos.y, name);
     }
 

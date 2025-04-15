@@ -1,6 +1,13 @@
 @use "variables";
 @use "colors";
 
+@mixin selectedGraphElement($color) {
+    stroke: $color !important;
+    fill: $color;
+
+    filter: drop-shadow(0 0 5px $color);
+}
+
 main#graph {
     display: flex;
     flex-direction: row;
@@ -27,59 +34,82 @@ main#graph {
 
     height: unset;
     width: unset;
+    z-index: 0;
 
     &,
     * {
-        transition: fill .1s linear, stroke .1s linear;
+        transition: fill .1s line, linear, stroke .1s line, linear;
     }
 
     &.view {
-        circle {
-            stroke: white !important;
-            fill: white;
-        }
 
-        line {
-            stroke: colors.$text-passive;
-        }
+        path {
 
-        circle, line {
-            cursor: default;
-            pointer-events: none;
+            &.selected {
+                stroke-width: 5;
+                stroke-dasharray: 15, 15;
+                animation: animStroke 1s linear 0s infinite;
+            }
         }
+    }
+
+    text {
+        fill: white;
+        stroke: white !important;
+        pointer-events: none;
+        background-color: rgba(black, $alpha: 0.4);
+        border-radius: 2px;
+        filter: brightness(150%) !important;
     }
 
 
     circle,
-    line {
+    path {
         cursor: pointer;
         pointer-events: all;
+        filter: drop-shadow(0 0 2px);
+        transition: none;
 
         &:hover,
         &.selected {
-            stroke: white !important;
-            fill: white;
-        }
 
+            &,
+            +text {
+                @include selectedGraphElement(colors.$border-mid);
+            }
+        }
+    }
+
+    .phantom {
+        user-select: none;
+        pointer-events: none;
+        stroke-width: 2px !important;
+    }
+
+    circle {
+
+        &:hover,
         &.selected {
-            box-shadow: 2px 0 5px colors.$border-light;
-        }
 
-        &.phantom {
-            user-select: none;
-            pointer-events: none;
+            &,
+            +text {
+                @include selectedGraphElement(colors.$border-mid);
+            }
         }
     }
 
     &.delete {
 
         circle,
-        line {
+        path {
 
             &:hover,
             &.selected {
-                stroke: colors.$error-fg !important;
-                fill: colors.$error-fg;
+
+                &,
+                +text {
+                    @include selectedGraphElement(colors.$error-fg);
+                }
             }
         }
     }
@@ -87,7 +117,15 @@ main#graph {
     &.add {
         cursor: crosshair;
 
-        circle, line {
+        circle,
+        path {
+            pointer-events: none;
+        }
+    }
+
+    &.link {
+
+        path {
             pointer-events: none;
         }
     }
@@ -97,19 +135,42 @@ main#graph {
         stroke: none !important;
     }
 
-    line {
-        stroke: colors.$text-mid !important;
+    path {
+        stroke: colors.$graph-link-color !important;
+        filter: drop-shadow(0 0 2px colors.$graph-link-color);
+        fill: none !important;
+
+        &.partiallySelected {
+            stroke: url('#selectGradient') !important;
+            z-index: 5;
+        }
     }
+}
+
+@keyframes animStroke {
+    from {
+        stroke-dashoffset: 30;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+#graphData {
+    width: 13em;
 
 }
 
 #graphData,
 #graphActions {
+    z-index: 5;
     padding: 1em;
-
+    position: relative;
     overflow-y: scroll;
 
-    input {
+    input,
+    select {
         border-radius: 3px;
         border: none;
 
@@ -124,7 +185,26 @@ main#graph {
             -moz-appearance: textfield;
         }
 
+        &[type=checkbox] {
+            width: 1em;
+        }
+
         background-color: rgba(colors.$input-bg, $alpha: .5);
+    }
+
+    select {
+        min-width: unset;
+        width: 5em;
+    }
+}
+
+#graphActions {
+    .editButton {
+        position: absolute;
+        left: 0;
+        translate: -110% 0;
+
+        z-index: 5;
     }
 }
 
@@ -150,6 +230,11 @@ table {
     tbody tr {
         &:nth-child(2n) {
             background-color: rgba(colors.$header-bg, $alpha: .5);
+        }
+
+        &.selected {
+            background-color: colors.$border-mid;
+            box-shadow: 0 0 5px colors.$border-mid;
         }
     }
 }

@@ -266,8 +266,32 @@ svg {
         }
     }
 
-    b, b * {
+    b,
+    b * {
         text-shadow: 0 0 5px colors.$text-active;
         color: colors.$text-active;
+    }
+}
+
+.collapseSection {
+    margin: .2em;
+    align-items: start !important;
+
+
+    >.iconLink {
+        font-weight: bold;
+        font-size: .6em;
+        width: 100%;
+        margin: .3em;
+    }
+
+    &.opened>.iconLink svg {
+        rotate: 90deg;
+    }
+
+    >div {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
     }
 }

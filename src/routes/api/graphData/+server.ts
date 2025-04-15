@@ -5,8 +5,6 @@ import { json } from "@sveltejs/kit";
 export const POST = async ({ request }) => {
     const { graphData, id }: { graphData: ReturnType<Graph['exportData']>, id: number } = await request.json();
 
-    console.log("Updating graph...");
-
     await prisma.graph.update({
         where: {
             id

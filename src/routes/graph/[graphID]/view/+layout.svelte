@@ -6,8 +6,11 @@
 
     import { Graph, Node, type Coordinates } from "$lib/graph.svelte.js";
     import "$lib/style/graph.scss";
-    import { setContext } from "svelte";
+    import { onMount, setContext } from "svelte";
     import { SvelteSet } from "svelte/reactivity";
+    import IconLink from "$lib/components/IconLink.svelte";
+    import CollapseSection from "$lib/components/CollapseSection.svelte";
+    import { render } from "svelte/server";
 
     const { data, children } = $props();
 
@@ -32,13 +35,19 @@
     // Context states
     let context = $state({
         graph,
-        zoom: 1.0,
+        zoom: 100,
         editMode: false,
         offset: {
             x: 0.0,
             y: 0.0,
         },
         selectedNodes: new SvelteSet<Node>(),
+        selectedLinks: new SvelteSet<string>(),
+
+        display: {
+            nodes: false,
+            links: false,
+        },
 
         rect: {
             x: 0,
@@ -51,60 +60,69 @@
 
         tools: _tools,
 
+        inputs: {
+            ctrl: false,
+            shift: false,
+            mouseDown: false,
+            movingNode: false,
+        },
+
         clickHandler(
             e: MouseEvent & {
                 currentTarget: SVGSVGElement & EventTarget;
             },
-        ) {},
+        ) {
+            if (context.inputs.movingNode) return;
+            context.selectedLinks.clear();
+            context.selectedNodes.forEach((n) => (n.selected = false));
+        },
 
-        viewToGraph(screenPos: Coordinates): Coordinates {
+        viewToGraph(
+            screenPos: Coordinates,
+            center: boolean = false,
+        ): Coordinates {
             const distToCenter: Coordinates = {
-                x: screenPos.x - this.rect.width / 2,
-                y: screenPos.y - this.rect.height / 2,
+                x: screenPos.x - (center ? this.rect.width / 2 : 0),
+                y: screenPos.y - (center ? this.rect.height / 2 : 0),
             };
 
             return {
                 x:
-                    distToCenter.x * this.zoom + // Appply zoom
+                    distToCenter.x / this.zoom + // Appply zoom
                     this.offset.x + // Offset (scroll)
-                    this.rect.width / 2, // Recenter
+                    (center ? 0 : this.rect.width / 2), // Recenter
                 y:
-                    distToCenter.y * this.zoom + // Appply zoom
+                    distToCenter.y / this.zoom + // Appply zoom
                     this.offset.y + // Offset (scroll)
-                    this.rect.height / 2, // Recenter
+                    (center ? 0 : this.rect.height / 2), // Recenter
             };
         },
 
-        graphToView(graphPos: Coordinates): Coordinates {
+        graphToView(
+            graphPos: Coordinates,
+            center: boolean = false,
+        ): Coordinates {
             const distToCenter: Coordinates = {
-                x: graphPos.x - this.rect.width / 2,
-                y: graphPos.y - this.rect.height / 2,
+                x: graphPos.x - (center ? this.rect.width / 2 : 0),
+                y: graphPos.y - (center ? this.rect.height / 2 : 0),
             };
 
             return {
                 x:
-                    (distToCenter.x - this.offset.x) / this.zoom +
-                    this.rect.width / 2,
+                    (distToCenter.x - this.offset.x) * this.zoom +
+                    (center ? 0 : this.rect.width / 2),
                 y:
-                    (distToCenter.y - this.offset.y) / this.zoom +
-                    this.rect.height / 2,
+                    (distToCenter.y - this.offset.y) * this.zoom +
+                    (center ? 0 : this.rect.height / 2),
             };
         },
-    });
-
-    // Key states
-    const keys = $state({
-        ctrl: false,
-        shift: false,
     });
 
     setContext("graphDisplay", context);
 
     const keyEvent = (e: KeyboardEvent) => {
-        keys.ctrl = e.ctrlKey;
-        keys.shift = e.shiftKey;
-
-        console.log(keys.ctrl);
+        context.inputs.ctrl = e.ctrlKey;
+        context.inputs.shift = e.shiftKey;
     };
 
     let mousePos = $state({
@@ -113,54 +131,172 @@
     });
 </script>
 
-<svelte:window onkeydown={keyEvent} onkeyup={keyEvent} />
+<svelte:window
+    onkeydown={keyEvent}
+    onkeyup={keyEvent}
+    onmousedown={() => {
+        context.inputs.mouseDown = true;
+    }}
+    onmouseup={() => {
+        context.inputs.mouseDown = false;
+        context.inputs.movingNode = false;
+    }}
+    onmousemove={(e) => {
+        if (context.inputs.movingNode && context.editMode) {
+            context.selectedNodes.forEach((n) => {
+                n.coord.x += e.movementX / context.zoom;
+                n.coord.y += e.movementY / context.zoom;
+            });
+        }
+    }}
+/>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main id="graph">
     <section id="graphData">
-        <h2>Nodes</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col" colspan="2">Position (x,y)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each context.graph.nodes as node}
+        <!-- Viewport params -->
+        <CollapseSection title="Viewport" startOpened>
+            <span
+                >Zoom : <input
+                    bind:value={context.zoom}
+                    onwheel={(e) => {
+                        context.zoom *= Math.pow(1.1, -Math.sign(e.deltaY));
+                    }}
+                /></span
+            >
+            <span
+                >Offset : <input
+                    bind:value={context.offset.x}
+                    onwheel={(e) => {
+                        context.offset.x -= e.deltaY;
+                    }}
+                />
+                <input
+                    bind:value={context.offset.y}
+                    onwheel={(e) => {
+                        context.offset.y -= e.deltaY;
+                    }}
+                /></span
+            >
+            <span>
+                Display node names : <input
+                    type="checkbox"
+                    bind:checked={context.display.nodes}
+                />
+            </span>
+            <span>
+                Display link costs : <input
+                    type="checkbox"
+                    bind:checked={context.display.links}
+                />
+            </span>
+        </CollapseSection>
+
+        <!-- Node informations -->
+        <CollapseSection title="Nodes">
+            <table>
+                <thead>
                     <tr>
-                        {#if context.editMode}
-                            <td><input type="text" value={node.name} /></td
-                            >
-                            <td
-                                ><input
-                                    type="number"
-                                    bind:value={node.coord.x}
-                                    onwheel={(e) => {
-                                        e.preventDefault();
-                                        node.coord.x += e.deltaY / 5;
-                                    }}
-                                /></td
-                            >
-                            <td
-                                ><input
-                                    type="number"
-                                    bind:value={node.coord.y}
-                                    onwheel={(e) => {
-                                        e.preventDefault();
-                                        node.coord.y += e.deltaY / 5;
-                                    }}
-                                /></td
-                            >
-                        {:else}
-                            <td>{node.name}</td>
-                            <td>{node.coord.x.toFixed(2)}</td>
-                            <td>{node.coord.y.toFixed(2)}</td>
-                        {/if}
+                        <th scope="col">Name</th>
+                        <th scope="col" colspan="2">Position (x,y)</th>
                     </tr>
-                {/each}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {#each context.graph.nodes as node}
+                        <tr
+                            class={context.selectedNodes.has(node)
+                                ? "selected"
+                                : ""}
+                        >
+                            {#if context.editMode}
+                                <td><input type="text" value={node.name} /></td>
+                                <td
+                                    ><input
+                                        type="number"
+                                        bind:value={node.coord.x}
+                                        onwheel={(e) => {
+                                            e.preventDefault();
+                                            node.coord.x += e.deltaY / 5;
+                                        }}
+                                    /></td
+                                >
+                                <td
+                                    ><input
+                                        type="number"
+                                        bind:value={node.coord.y}
+                                        onwheel={(e) => {
+                                            e.preventDefault();
+                                            node.coord.y += e.deltaY / 5;
+                                        }}
+                                    /></td
+                                >
+                            {:else}
+                                <td>{node.name}</td>
+                                <td>{node.coord.x.toFixed(2)}</td>
+                                <td>{node.coord.y.toFixed(2)}</td>
+                            {/if}
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+        </CollapseSection>
+
+        <!-- Link informations -->
+        <CollapseSection title="Links">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each context.graph.matrix as row, i}
+                        {#each row as link, j}
+                            {#if link != Infinity}
+                                <tr
+                                    id="link-{i}-{j}"
+                                    class={context.selectedLinks.has(
+                                        `link-${i}-${j}`,
+                                    ) ||
+                                    (context.graph.nodes[i].selected &&
+                                        context.graph.nodes[j].selected)
+                                        ? "selected"
+                                        : ""}
+                                >
+                                    <td>{context.graph.nodes[i].name}</td>
+                                    <td>{context.graph.nodes[j].name}</td>
+                                    {#if context.editMode}
+                                        <td
+                                            ><input
+                                                type="number"
+                                                bind:value={
+                                                    context.graph.matrix[i][j]
+                                                }
+                                                onwheel={(e) => {
+                                                    e.preventDefault();
+                                                    context.graph.matrix[i][j] =
+                                                        Math.max(
+                                                            1,
+                                                            link -
+                                                                Math.sign(
+                                                                    e.deltaY,
+                                                                ),
+                                                        );
+                                                }}
+                                            /></td
+                                        >
+                                    {:else}
+                                        <td>{link}</td>
+                                    {/if}
+                                </tr>
+                            {/if}
+                        {/each}
+                    {/each}
+                </tbody>
+            </table>
+        </CollapseSection>
     </section>
 
     <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -176,29 +312,29 @@
 
             // Check if we're scrolling or zooming (pinch or scroll + ctrl)
             if (
-                keys.ctrl ||
+                context.inputs.ctrl ||
                 (Math.abs(e.deltaY) < 5 && Math.abs(e.deltaX) < 5)
             ) {
                 // If using ctrl + scroll, reduce delta
-                const zoomPower = e.deltaY / (keys.ctrl ? 100 : 1);
+                const zoomPower = -e.deltaY / (context.inputs.ctrl ? 100 : 1);
 
                 context.zoom *= Math.pow(1.1, zoomPower);
             } else {
                 // Update offset based on scroll values and zoom
-                context.offset.x += e.deltaX * 0.5 * context.zoom;
-                context.offset.y += e.deltaY * 0.5 * context.zoom;
+                context.offset.x += (e.deltaX * 0.5) / context.zoom;
+                context.offset.y += (e.deltaY * 0.5) / context.zoom;
             }
         }}
         onclick={context.clickHandler}
         onmousemove={(e) => {
-            mousePos.x = e.layerX;
-            mousePos.y = e.layerY;
+            mousePos.x = e.offsetX;
+            mousePos.y = e.offsetY;
         }}
     >
         <!-- Render links -->
         {#each context.graph.matrix as row, i}
             {#each row as link, j}
-                {#if link != Infinity && link != null}
+                {#if link != Infinity}
                     <GraphLink
                         bind:start={context.graph.nodes[i]}
                         bind:end={context.graph.nodes[j]}
@@ -228,28 +364,9 @@
     </svg>
 
     <section id="graphActions">
-        <div id="graphActions__picker">
-            {#if context.editMode}
-                {#each context.tools.all as tool}
-                    <IconButton
-                        icon={tool.icon}
-                        label={tool.name}
-                        action={() => {
-                            context.tools.selected = tool.value;
-                            context.selectedNodes.forEach(
-                                (n) => (n.selected = false),
-                            );
-                        }}
-                        cssClass={[
-                            context.tools.selected == tool.value
-                                ? "selected"
-                                : "",
-                        ]}
-                    />
-                {/each}
-            {/if}
-        </div>
+        {#if !context.editMode && data.user != undefined && data.user.id == data.graph.authorId}
+            <IconLink icon="edit" label="Edit mode" link="./view/edit" />
+        {/if}
+        {@render children()}
     </section>
 </main>
-
-{@render children()}
