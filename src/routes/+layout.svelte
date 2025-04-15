@@ -13,6 +13,7 @@
     // Lib imports
     import { clickOutside } from "$lib/clickOutside";
     import IconButton from "$lib/components/IconButton.svelte";
+    import { goto } from "$app/navigation";
 
     // Props
     const { children, data } = $props();
@@ -20,6 +21,7 @@
     // State declarations
     let openPanel: boolean = $state(false);
     let openAccountPanel: boolean = $state(false);
+    let value = $state("");
 </script>
 
 <header>
@@ -45,7 +47,14 @@
     </div>
 
     <div>
-        <input placeholder="Search..." />
+        <input
+            placeholder="Search..."
+            bind:value
+            onkeydown={(e) => {
+                if (value != "" && e.key == "Enter")
+                    goto(`/discover/${value}/all`);
+            }}
+        />
         <span>
             {#if data.user}
                 {@html data.user.name}
@@ -72,6 +81,12 @@
             {#if data.user}
                 <span id="accountPanel__username">{@html data.user.name}</span>
                 <hr />
+                <IconLink
+                    label="See profile"
+                    icon="account"
+                    link="/profile/{data.user.id}"
+                    bind:openedMenu={openAccountPanel}
+                />
                 <IconLink
                     label="Manage account"
                     icon="settings"
@@ -129,9 +144,9 @@
                 bind:openedMenu={openPanel}
             />
             <IconLink
-                label="Learn"
-                icon="book"
-                link="/tutorial"
+                label="Create"
+                icon="circlePlus"
+                link="/graph/create"
                 bind:openedMenu={openPanel}
             />
             {#if data.user}

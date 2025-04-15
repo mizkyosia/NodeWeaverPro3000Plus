@@ -1,11 +1,21 @@
 import { prisma } from '$lib/server/session.js';
 import { redirect } from '@sveltejs/kit';
 
-export async function load({ params, route }) {
+export async function load({ params, route, locals }) {
+    let id = parseInt(params.graphID);
+    if (isNaN(id)) return redirect(302, "/discover");
+
     const graph = await prisma.graph.findUnique({
         where: {
-            id: parseInt(params.graphID),
-            public: true
+            id,
+            OR: [
+                {
+                    public: true
+                },
+                {
+                    authorId: locals.user?.id
+                }
+            ]
         },
         include: {
             author: {
@@ -19,8 +29,8 @@ export async function load({ params, route }) {
         }
     });
 
-    if(graph == null) return redirect(302, '/discover');
-    
+    // if (graph == null) return redirect(302, '/discover');
+
     return {
         graph
     }

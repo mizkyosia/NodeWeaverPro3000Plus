@@ -55,6 +55,11 @@
         type="textarea"
         value={data.graph?.description}
     />
+
+    <span>
+        Public ?
+        <input type="checkbox" name="public" checked={data.graph?.public} />
+    </span>
 </Dialog>
 
 {#if data.graph == null}

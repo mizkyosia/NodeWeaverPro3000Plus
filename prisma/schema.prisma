@@ -26,6 +26,7 @@ enum Visibility {
 
 model User {
     id           Int        @id @default(autoincrement())
+    bio          String     @default("Hello ! I'm a new user")
     name         String     @unique
     passwordHash String
     email        String     @unique
@@ -83,7 +84,7 @@ model Collection {
     author      User?   @relation("CollectionAuthor", references: [id], fields: [authorId], onUpdate: Cascade, onDelete: SetNull)
     graphs      Graph[] @relation("CollectionGraphs")
     subscribers User[]  @relation("CollectionSubscriber")
-    
+
     @@fulltext([title])
 }
 

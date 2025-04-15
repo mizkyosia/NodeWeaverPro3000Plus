@@ -3,8 +3,9 @@
 Used for displaying collection "previews", including name, author, last update & number of graphs
 -->
 <script lang="ts">
+    import { getContext } from "svelte";
     import IconLink from "./IconLink.svelte";
-    import { collectionDetailsState } from "../previewStates.svelte";
+    import type { _CollectionDetails } from "$api/collectionDetails/+server";
 
     const {
         data,
@@ -24,6 +25,11 @@ Used for displaying collection "previews", including name, author, last update &
         };
     } = $props();
 
+    let collectionDetailsContext: {
+        show: boolean;
+        data?: _CollectionDetails;
+    } = getContext("collectionDetails");
+
     let description =
         data.description.length > 100
             ? data.description.substring(0, 100) + "..."
@@ -31,16 +37,16 @@ Used for displaying collection "previews", including name, author, last update &
 
     // Open collection details panel, and fetch necessary data
     async function openCollectionDetails() {
-        collectionDetailsState.show = true;
+        collectionDetailsContext.show = true;
 
-        if (collectionDetailsState.data?.id == data.id) return;
+        if (collectionDetailsContext.data?.id == data.id) return;
 
-        collectionDetailsState.data = undefined;
+        collectionDetailsContext.data = undefined;
 
         fetch(`/api/collectionDetails?collectionID=${data.id}`, {
             method: "GET",
         }).then(async (res) => {
-            collectionDetailsState.data = await res.json();
+            collectionDetailsContext.data = await res.json();
         });
     }
 </script>

@@ -20,9 +20,7 @@
 </script>
 
 {#if data.category == "all" && data.graphs != undefined && data.collections != undefined}
-    <div>
-        
-    </div>
+    <div></div>
     <PreviewSection title="Graphs" link="./graphs">
         {#each data.graphs as graph}
             <DataPreview data={graph} />

@@ -3,8 +3,9 @@
 Used for displaying graph "previews", including name, author, time and an image
 -->
 <script lang="ts">
+    import { getContext } from "svelte";
     import IconLink from "./IconLink.svelte";
-    import { graphDetailsState } from "../previewStates.svelte";
+    import type { _GraphDetails } from "$api/graphDetails/+server";
 
     const {
         data,
@@ -21,6 +22,11 @@ Used for displaying graph "previews", including name, author, time and an image
         };
     } = $props();
 
+    let graphDetailsContext: {
+        show: boolean;
+        data?: _GraphDetails;
+    } = getContext("graphDetails");
+
     let description =
         data.description.length > 100
             ? data.description.substring(0, 100) + "..."
@@ -28,16 +34,16 @@ Used for displaying graph "previews", including name, author, time and an image
 
     // Open graph details panel, and fetch necessary data
     async function openGraphDetails() {
-        graphDetailsState.show = true;
+        graphDetailsContext.show = true;
 
-        if (graphDetailsState.data?.id == data.id) return;
+        if (graphDetailsContext.data?.id == data.id) return;
 
-        graphDetailsState.data = undefined;
+        graphDetailsContext.data = undefined;
 
         fetch(`/api/graphDetails?graphID=${data.id}`, {
             method: "GET",
         }).then(async (res) => {
-            graphDetailsState.data = await res.json();
+            graphDetailsContext.data = await res.json();
         });
     }
 </script>

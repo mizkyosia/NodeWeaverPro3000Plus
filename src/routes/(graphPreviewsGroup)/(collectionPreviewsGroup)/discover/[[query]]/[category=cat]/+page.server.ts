@@ -80,6 +80,45 @@ export const load = async ({ params, locals }) => {
             },
             take: (params.category == 'all' ? 15 : 100)
         });
+    } else {
+        if (params.category != "collections") graphs = await prisma.graph.findMany({
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true
+                    },
+                    where: {
+                        visibility: {
+                            in: visibilities
+                        }
+                    }
+                }
+            },
+            take: (params.category == "all" ? 30 : 100)
+        });
+
+        if (params.category != "graphs") collections = await prisma.collection.findMany({
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true
+                    },
+                    where: {
+                        visibility: {
+                            in: visibilities
+                        }
+                    }
+                },
+                _count: {
+                    select: {
+                        graphs: true
+                    }
+                }
+            },
+            take: (params.category == "all" ? 30 : 100),
+        })
     }
 
     return {

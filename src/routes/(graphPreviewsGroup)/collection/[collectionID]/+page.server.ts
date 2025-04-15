@@ -1,6 +1,7 @@
 import { prisma } from '$lib/server/session.js';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import type { $Enums } from '@prisma/client';
 
 export async function load({ params }) {
     return {
@@ -43,7 +44,7 @@ export const actions: Actions = {
         if (collection == null) return fail(400, {});
         const link = formData.get('redirect');
 
-        if(link) redirect(302, link.toString());
+        if (link) redirect(302, link.toString());
     },
     edit: async ({ request, locals, params }) => {
         const formData = await request.formData();
@@ -57,6 +58,7 @@ export const actions: Actions = {
                 data: {
                     title: formData.get('title')?.toString() ?? undefined,
                     description: formData.get('description')?.toString() ?? undefined,
+                    visibility: (formData.get('visibility')?.toString() as $Enums.Visibility) ?? "PRIVATE",
                 }
             });
 
@@ -64,6 +66,6 @@ export const actions: Actions = {
 
         const link = formData.get('redirect');
 
-        if(link) redirect(302, link.toString());
+        if (link) redirect(302, link.toString());
     }
 }

@@ -11,6 +11,7 @@ button,
     background-color: colors.$input-bg;
 
     &.multiselect {
+        gap: 0;
         background-color: colors.$global-bg;
     }
 

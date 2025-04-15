@@ -2,6 +2,10 @@
 
 A simple & straightforward graph editor
 
+## Assets credits 
+
+All icons are either made by us or taken from [SVG Repo Dazzle Line Icons](https://www.svgrepo.com/collection/dazzle-line-icons)
+
 ## How to run ?
 
 First, you need to install [Docker](https://www.docker.com/)

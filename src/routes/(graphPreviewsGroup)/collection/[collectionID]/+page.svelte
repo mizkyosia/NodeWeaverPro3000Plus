@@ -55,6 +55,22 @@
         type="textarea"
         value={data.collection?.description}
     />
+
+    <FormInput name="visibility" title="Visibility" type="select">
+        <option
+            value="PRIVATE"
+            selected={data.collection?.visibility == "PRIVATE"}>PRIVATE</option
+        >
+        <option
+            value="PUBLIC"
+            selected={data.collection?.visibility == "PUBLIC"}>PUBLIC</option
+        >
+        <option
+            value="RESTRICTED"
+            selected={data.collection?.visibility == "RESTRICTED"}
+            >RESTRICTED</option
+        >
+    </FormInput>
 </Dialog>
 
 {#if data.collection == null}
