@@ -1,9 +1,12 @@
 services:
 
   db:
-    image: mysql:latest
+    image: mizkyosia/nw-db
     restart: always
     env_file: ./.env
+    build: 
+      context: ./database
+      dockerfile: Dockerfile_db
     environment:
       - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
       - MYSQL_DATABASE=$DB_DATABASE
@@ -25,6 +28,7 @@ services:
       - backend
 
   node_weaver:
+    image: mizkyosia/nodeweaver
     develop:
       watch:
         - action: sync
@@ -34,7 +38,7 @@ services:
             - node_modules/
     depends_on:
       - db
-    build: ./
+    build: .
     restart: on-failure
     env_file: ./.env
     ports:
