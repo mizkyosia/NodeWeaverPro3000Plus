@@ -1,6 +1,6 @@
 
-<div align="center">
-<img src="./static/logo2.png" style="filter: drop-shadow(0 0 5px rgb(70, 138, 113)); -webkit-filter: drop-shadow(0 0 5px rgb(70, 138, 113));">
+<div align="center" style="filter: drop-shadow(0 0 5px rgb(70, 138, 113)); -webkit-filter: drop-shadow(0 0 5px rgb(70, 138, 113));">
+<img src="./static/logo2.png">
 </div>
 
 > By Léo Lewandowski, Victor Dumortier, Sasha Le Roux & Pierre Butez
