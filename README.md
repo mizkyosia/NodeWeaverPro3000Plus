@@ -1,6 +1,6 @@
 
-<div align="center" style="filter: drop-shadow(0 0 5px rgb(70, 138, 113)); -webkit-filter: drop-shadow(0 0 5px rgb(70, 138, 113));">
-<img src="./static/logo2.png">
+<div align="center" style="margin: 20px;">
+<img src="./static/logo.png">
 </div>
 
 > By Léo Lewandowski, Victor Dumortier, Sasha Le Roux & Pierre Butez
@@ -41,7 +41,7 @@ git clone https://github.com/mizkyosia/NodeWeaverPro3000Plus.git
 
 ### Running
 
-#### Docker CLI
+Open a terminal instance (`cmd` on Windows)
 
 Move the current context to the project's directory :
 ```sh
@@ -59,14 +59,12 @@ docker compose build
 ```
 
 > [!NOTE]
-> These 2 previous instructions must only be done once (unlesse you actively modified the project)
+> These 2 previous instructions must only be done once (unless you actively modified the project)
 
 Then, you can run the project like so :
 ```sh
 docker compose up
 ```
-
-#### Docker GUI
 
 ### Accessing the project
 
