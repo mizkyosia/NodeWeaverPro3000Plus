@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { goto, invalidateAll } from "$app/navigation";
     import Dialog from "$lib/components/Dialog.svelte";
     import FormInput from "$lib/components/FormInput.svelte";
     import GraphPreview from "$lib/components/GraphPreview.svelte";
@@ -8,6 +7,7 @@
 
     // Get route params
     const { data } = $props();
+    let collection = $state({ inner: data.collection });
 
     // Define header state
     import { headerState } from "$lib/headerState.svelte";
@@ -18,22 +18,42 @@
             url: "/home",
         },
         {
-            name: data.collection?.title ?? "Unknown",
-            url: "/home/" + (data.collection?.id ?? ""),
+            name: collection.inner?.title ?? "Unknown",
+            url: "/home/" + (collection.inner?.id ?? ""),
         },
     ];
 
     // Dialog states
     let deleteDialog = $state(false),
-        editDialog = $state(false),
-        subscribed = $state(true);
+        editDialog = $state(false);
+
+    function updateFavorite() {
+        collection.inner.subscribed = !collection.inner.subscribed;
+
+        fetch("/api/favorite", {
+            method: "POST",
+            body: JSON.stringify({
+                ID: collection.inner.id,
+                favorite: collection.inner.subscribed,
+                collection: true,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (res) => {
+            collection.inner = {
+                ...(await res.json()),
+                graphs: collection.inner.graphs,
+            };
+        });
+    }
 </script>
 
 <!-- Delete dialog -->
 <Dialog
     title="Delete"
     description="Are you sure you want to delete this collection ? This operation cannot be undone"
-    action="/collection/{data.collection?.id}?/delete"
+    action="/collection/{collection.inner?.id}?/delete"
     bind:show={deleteDialog}
 >
     <input type="hidden" value="/home" name="redirect" /></Dialog
@@ -44,96 +64,78 @@
     title="Edit"
     description="Change the title and/or description"
     confirm="Confirm changes"
-    action="/collection/{data.collection?.id}?/edit"
+    action="/collection/{collection.inner?.id}?/edit"
     bind:show={editDialog}
 >
     <FormInput
         title="Title"
         name="title"
         type="text"
-        value={data.collection?.title}
+        value={collection.inner?.title}
     />
     <FormInput
         title="Description"
         name="description"
         type="textarea"
-        value={data.collection?.description}
+        value={collection.inner?.description}
     />
-    <input type="hidden" value="/home/{data.collection?.id}" name="redirect" />
+    <input type="hidden" value="/home/{collection.inner?.id}" name="redirect" />
 </Dialog>
 
-{#if data.collection == null}
-    <h2>This collection does not exist</h2>
-{:else}
-    <div id="collection__actions">
-        <h2>
-            <Icon name="box" />{data.collection.title}
-        </h2>
-        <div>
-            {#if data.collection.authorId == data.user?.id}
-                <IconButton
-                    icon="edit"
-                    label="Edit"
-                    action={() => (editDialog = true)}
-                />
-                <IconButton
-                    icon="trash"
-                    label="Delete"
-                    action={() => (deleteDialog = true)}
-                    cssClass={["red"]}
-                />
-            {:else}
-                <IconButton
-                    icon="heartFilled"
-                    label="Favorite"
-                    action={() => {
-                        fetch("/api/favorite", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                ID: data.collection?.id,
-                                favorite: false,
-                                collection: true,
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        }).then(async () => {
-                            invalidateAll();
-                            goto("/home");
-                        });
-                    }}
-                />
-            {/if}
-        </div>
+<div id="collection__actions">
+    <h2>
+        <Icon name="box" />{collection.inner.title}
+    </h2>
+    <div>
+        {#key collection.inner.subscribed}
+            <IconButton
+                icon={collection.inner.subscribed ? "heartFilled" : "heart"}
+                label={collection.inner.subscribed ? "Subscribed" : "Subscribe"}
+                action={updateFavorite}
+            />
+        {/key}
+        {#if collection.inner.authorId == data.user?.id}
+            <IconButton
+                icon="edit"
+                label="Edit"
+                action={() => (editDialog = true)}
+            />
+            <IconButton
+                icon="trash"
+                label="Delete"
+                action={() => (deleteDialog = true)}
+                cssClass={["red"]}
+            />
+        {/if}
     </div>
-    <p>{data.collection.description}</p>
-    <div class="stats alt">
-        <span><b>XYZ</b> graphs</span>
-        <hr />
-        <span><b>XYZ</b> followers</span>
-        <hr />
-        <span
-            >Last updated on <b
-                >{data.collection.updatedAt.toLocaleString("fr-FR", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                })}</b
-            ></span
-        >
-        <hr />
-    </div>
-
-    <div
-        class={data.collection.graphs.length > 0
-            ? "previewList"
-            : "collection__empty"}
+</div>
+<p>{collection.inner.description}</p>
+<div class="stats alt">
+    <span><b>XYZ</b> graphs</span>
+    <hr />
+    <span><b>XYZ</b> followers</span>
+    <hr />
+    <span
+        >Last updated on <b
+            >{collection.inner.updatedAt.toLocaleString("fr-FR", {
+                dateStyle: "short",
+                timeStyle: "short",
+            })}</b
+        ></span
     >
-        {#each data.collection.graphs as graph}
-            <GraphPreview data={graph} />
-        {:else}
-            <h3>This collection is empty !</h3>
-            <h4>Start adding graphs now !</h4>
-            <a href="/graph/create" class="slimButton"><Icon name="plus" /></a>
-        {/each}
-    </div>
-{/if}
+    <hr />
+</div>
+
+<div
+    class={collection.inner.graphs.length > 0
+        ? "previewList"
+        : "collection__empty"}
+>
+    {#each collection.inner.graphs as graph}
+        <GraphPreview data={graph} />
+    {:else}
+        <h3>This collection is empty !</h3>
+        <h4>Start adding graphs now !</h4>
+        <a href="/graph/create" class="slimButton"><Icon name="plus" /></a>
+    {/each}
+</div>

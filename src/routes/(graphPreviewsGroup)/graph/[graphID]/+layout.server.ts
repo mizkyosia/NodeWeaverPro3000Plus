@@ -25,13 +25,18 @@ export async function load({ params, route, locals }) {
                 }
             },
             ratings: true,
-            _count: true
+            _count: true,
+            favorited: {
+                where: {
+                    id: locals.user?.id
+                }
+            }
         }
     });
 
     if (graph == null) return redirect(302, '/discover');
 
     return {
-        graph
+        graph: { ...graph, favorited: graph?.favorited.length > 0 }
     }
 }

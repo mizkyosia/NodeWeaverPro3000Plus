@@ -7,6 +7,8 @@
 
     const { data } = $props();
 
+    let collection = $state({ inner: data.collection });
+
     headerState.path = [
         {
             name: "Discover",
@@ -17,14 +19,35 @@
             url: "/discover/collections",
         },
         {
-            name: data.collection?.title ?? "",
-            url: "/collection/" + data.collection?.id,
+            name: collection.inner?.title ?? "",
+            url: "/collection/" + collection.inner?.id,
         },
     ];
 
     // Dialog states
     let deleteDialog = $state(false),
         editDialog = $state(false);
+
+    function updateFavorite() {
+        collection.inner.subscribed = !collection.inner.subscribed;
+
+        fetch("/api/favorite", {
+            method: "POST",
+            body: JSON.stringify({
+                ID: collection.inner.id,
+                favorite: collection.inner.subscribed,
+                collection: true,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (res) => {
+            collection.inner = {
+                ...(await res.json()),
+                graphs: collection.inner.graphs,
+            };
+        });
+    }
 </script>
 
 <!-- Delete dialog -->
@@ -47,39 +70,48 @@
         title="Title"
         name="title"
         type="text"
-        value={data.collection?.title}
+        value={collection.inner?.title}
     />
     <FormInput
         title="Description"
         name="description"
         type="textarea"
-        value={data.collection?.description}
+        value={collection.inner?.description}
     />
 
     <FormInput name="visibility" title="Visibility" type="select">
         <option
             value="PRIVATE"
-            selected={data.collection?.visibility == "PRIVATE"}>PRIVATE</option
+            selected={collection.inner?.visibility == "PRIVATE"}>PRIVATE</option
         >
         <option
             value="PUBLIC"
-            selected={data.collection?.visibility == "PUBLIC"}>PUBLIC</option
+            selected={collection.inner?.visibility == "PUBLIC"}>PUBLIC</option
         >
         <option
             value="RESTRICTED"
-            selected={data.collection?.visibility == "RESTRICTED"}
+            selected={collection.inner?.visibility == "RESTRICTED"}
             >RESTRICTED</option
         >
     </FormInput>
 </Dialog>
 
-{#if data.collection == null}
+{#if collection.inner == null}
     <h2>Unknown collection</h2>
 {:else}
     <section>
         <div class="actions">
-            <h2>{data.collection.title}</h2>
-            {#if data.collection.authorId === data.user?.id}
+            <h2>{collection.inner.title}</h2>
+            {#key collection.inner.subscribed}
+                <IconButton
+                    icon={collection.inner.subscribed ? "heartFilled" : "heart"}
+                    label={collection.inner.subscribed
+                        ? "Subscribed"
+                        : "Subscribe"}
+                    action={updateFavorite}
+                />
+            {/key}
+            {#if collection.inner.authorId === data.user?.id}
                 <IconButton
                     icon="edit"
                     label="Edit"
@@ -94,16 +126,17 @@
             {/if}
         </div>
         <p>
-            {data.collection.description}
+            {collection.inner.description}
         </p>
         <div class="stats alt">
-            <span><b>{data.collection._count.subscribers}</b> subscribers</span>
+            <span><b>{collection.inner._count.subscribers}</b> subscribers</span
+            >
             <hr />
-            <span><b>{data.collection.graphs.length}</b> graphs</span>
+            <span><b>{collection.inner.graphs.length}</b> graphs</span>
             <hr />
             <span
                 >Last updated on <b
-                    >{data.collection.updatedAt.toLocaleString("fr-FR", {
+                    >{collection.inner.updatedAt.toLocaleString("fr-FR", {
                         dateStyle: "short",
                         timeStyle: "short",
                     })}</b
@@ -113,7 +146,7 @@
         </div>
 
         <div class="previewList">
-            {#each data.collection.graphs as graph}
+            {#each collection.inner.graphs as graph}
                 <GraphPreview data={graph} />
             {/each}
         </div>

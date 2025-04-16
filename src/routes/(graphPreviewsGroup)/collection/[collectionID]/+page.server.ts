@@ -3,31 +3,40 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import type { $Enums } from '@prisma/client';
 
-export async function load({ params }) {
-    return {
-        collection: await prisma.collection.findUnique({
-            where: {
-                id: parseInt(params.collectionID)
-            },
-            include: {
-                graphs: {
-                    include: {
-                        author: {
-                            select: {
-                                id: true,
-                                name: true
-                            }
+export async function load({ params, locals }) {
+    const collection = await prisma.collection.findUnique({
+        where: {
+            id: parseInt(params.collectionID)
+        },
+        include: {
+            graphs: {
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true
                         }
                     }
-                },
-                _count: {
-                    select: {
-                        subscribers: true
-                    }
+                }
+            },
+            _count: {
+                select: {
+                    subscribers: true
+                }
+            },
+            subscribers: {
+                where: {
+                    id: locals.user?.id
                 }
             }
-        })
-    }
+        }
+    });
+
+    if (collection != null)
+        return {
+            collection: { ...collection, subscribed: (collection?.subscribers.length ?? 0) > 0 }
+        }
+    else return redirect(302, "/discover");
 }
 
 export const actions: Actions = {
