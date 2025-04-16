@@ -1,4 +1,4 @@
--- Adminer 5.0.6 MySQL 9.2.0 dump
+-- Adminer 5.2.1 MySQL 9.2.0 dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -23,7 +23,8 @@ CREATE TABLE `Collection` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `Collection` (`id`, `title`, `description`, `authorId`, `createdAt`, `updatedAt`, `visibility`) VALUES
-(2,	'Test collection',	'lorem ipsum bla bla bla',	1,	'2025-04-05 11:34:18.988',	'2025-04-15 22:12:12.429',	'PUBLIC');
+(2,	'Test collection',	'lorem ipsum bla bla bla',	1,	'2025-04-05 11:34:18.988',	'2025-04-15 22:12:12.429',	'PUBLIC'),
+(4,	'Collection 2',	'Another collection',	2,	'2025-04-16 12:36:12.203',	'2025-04-16 12:36:12.202',	'PUBLIC');
 
 DROP TABLE IF EXISTS `Graph`;
 CREATE TABLE `Graph` (
@@ -42,14 +43,22 @@ CREATE TABLE `Graph` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `Graph` (`id`, `title`, `description`, `authorId`, `public`, `data`, `createdAt`, `updatedAt`) VALUES
-(1,	'Test graph',	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',	1,	1,	'{\"nodes\": [{\"x\": 1, \"y\": 2, \"name\": \"node0\"}, {\"x\": 3, \"y\": 2, \"name\": \"node1\"}, {\"x\": 1.748666687011719, \"y\": 10.025615234375, \"name\": \"node2\"}, {\"x\": 0.2786666870117193, \"y\": -0.2449999999999997, \"name\": \"node3\"}, {\"x\": 1.350307312011713, \"y\": 1.025, \"name\": \"node4\"}, {\"x\": -2.891333312988281, \"y\": 0.885, \"name\": \"node5\"}, {\"x\": -2.171333312988284, \"y\": -1.825000000000001, \"name\": \"node6\"}, {\"x\": -0.4013333129882817, \"y\": -1.445, \"name\": \"node7\"}, {\"x\": 2.458666687011716, \"y\": -1.235, \"name\": \"node8\"}, {\"x\": -0.8313333129882816, \"y\": 1.475000000000001, \"name\": \"node9\"}, {\"x\": -1.881333312988281, \"y\": -0.445, \"name\": \"node10\"}], \"matrix\": [[null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, 1], [null, null, null, null, null, null, null, null, 1, 1, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, 1, null, 2, 1, null, null, null, null, null, null], [null, null, null, null, 1, null, null, null, null, null, 15], [null, null, null, null, null, null, null, null, null, 1, null]]}',	'2025-04-06 13:22:58.000',	'2025-04-15 20:49:30.414'),
+(1,	'Test graph',	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',	1,	1,	'{\"nodes\": [{\"x\": 1, \"y\": 2, \"name\": \"node0\"}, {\"x\": 3, \"y\": 2, \"name\": \"node1\"}, {\"x\": 1.748666687011719, \"y\": 10.025615234375, \"name\": \"node2\"}, {\"x\": 0.2786666870117193, \"y\": -0.2449999999999997, \"name\": \"node3\"}, {\"x\": 1.350307312011713, \"y\": 1.025, \"name\": \"node4\"}, {\"x\": -2.891333312988281, \"y\": 0.885, \"name\": \"node5\"}, {\"x\": -2.171333312988284, \"y\": -1.825000000000001, \"name\": \"node6\"}, {\"x\": -0.4013333129882817, \"y\": -1.445, \"name\": \"node7\"}, {\"x\": 2.458666687011716, \"y\": -1.235, \"name\": \"node8\"}, {\"x\": -0.8313333129882816, \"y\": 1.475000000000001, \"name\": \"node9\"}, {\"x\": -1.881333312988281, \"y\": -0.445, \"name\": \"node10\"}], \"matrix\": [[null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, 1], [null, null, null, null, null, null, null, null, 1, 1, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null], [null, 1, null, 2, 1, null, null, null, null, null, null], [null, null, null, null, 1, null, null, null, null, null, 15], [null, null, null, null, null, null, null, null, null, 1, null]]}',	'2025-04-06 13:22:58.000',	'2025-04-16 14:07:54.330'),
 (2,	'Graph n°2',	'This is the second graph',	1,	1,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-07 18:06:44.000',	'2025-04-15 22:32:47.580'),
 (3,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 21:30:39.120',	'2025-04-15 21:30:39.120'),
 (4,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 21:30:42.695',	'2025-04-15 21:30:42.695'),
 (5,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 21:30:47.090',	'2025-04-15 21:30:47.090'),
 (6,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 21:31:28.110',	'2025-04-15 21:31:28.110'),
 (7,	'Graph 7',	'Test',	1,	1,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 21:34:48.020',	'2025-04-15 21:43:04.161'),
-(8,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 22:19:14.356',	'2025-04-15 22:19:14.356');
+(8,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-15 22:19:14.356',	'2025-04-15 22:19:14.356'),
+(9,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 12:07:37.009',	'2025-04-16 12:07:37.009'),
+(10,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 12:23:37.798',	'2025-04-16 12:23:37.798'),
+(11,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 12:23:38.790',	'2025-04-16 12:23:38.790'),
+(12,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 12:23:39.908',	'2025-04-16 12:23:39.908'),
+(13,	'New graph',	'Your brand new graph !',	2,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 12:41:12.218',	'2025-04-16 12:41:12.218'),
+(14,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 14:08:10.423',	'2025-04-16 14:08:10.423'),
+(15,	'New graph',	'Your brand new graph !',	1,	0,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 15:46:18.831',	'2025-04-16 15:46:18.831'),
+(16,	'New graph 16',	'Your brand new graph !',	1,	1,	'{\"nodes\": [], \"matrix\": []}',	'2025-04-16 16:04:27.933',	'2025-04-16 16:04:59.282');
 
 DROP TABLE IF EXISTS `Rating`;
 CREATE TABLE `Rating` (
@@ -96,7 +105,8 @@ CREATE TABLE `User` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `User` (`id`, `name`, `email`, `joinedAt`, `passwordHash`, `visibility`, `bio`) VALUES
-(1,	'mizkyosia',	'mizkyosia@gmail.com',	'2025-04-04 12:07:24.278',	'$argon2id$v=19$m=19456,t=2,p=1$/cLCiTl0x0z0sPy+ZAAd1w$YKovqIN8QSDamc1XmAl5treMLCxfjJ31Cxl4vA6f4jo',	'PUBLIC',	'Account for testing purposes');
+(1,	'mizkyosia',	'mizkyosia@gmail.com',	'2025-04-04 12:07:24.278',	'$argon2id$v=19$m=19456,t=2,p=1$/cLCiTl0x0z0sPy+ZAAd1w$YKovqIN8QSDamc1XmAl5treMLCxfjJ31Cxl4vA6f4jo',	'PUBLIC',	'Account for testing purposes'),
+(2,	'test',	'test@test.test',	'2025-04-16 12:25:59.470',	'$argon2id$v=19$m=19456,t=2,p=1$rrsZ1GmwThkKZ5GSD/z+qg$stMyR4N8sl9VKXGI51Sr49Lc/BnkOx+tCWvaGIt0b6M',	'PUBLIC',	'Hello ! I\'m a new user');
 
 DROP TABLE IF EXISTS `_CollectionGraphs`;
 CREATE TABLE `_CollectionGraphs` (
@@ -109,7 +119,8 @@ CREATE TABLE `_CollectionGraphs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `_CollectionGraphs` (`A`, `B`) VALUES
-(2,	1);
+(2,	1),
+(2,	16);
 
 DROP TABLE IF EXISTS `_CollectionSubscriber`;
 CREATE TABLE `_CollectionSubscriber` (
@@ -134,7 +145,8 @@ CREATE TABLE `_Favorites` (
 
 INSERT INTO `_Favorites` (`A`, `B`) VALUES
 (1,	1),
-(2,	1);
+(2,	1),
+(16,	1);
 
 DROP TABLE IF EXISTS `_prisma_migrations`;
 CREATE TABLE `_prisma_migrations` (
@@ -160,4 +172,4 @@ INSERT INTO `_prisma_migrations` (`id`, `checksum`, `finished_at`, `migration_na
 ('f063d7ea-001c-45bc-9e87-933506924c89',	'eb4ed94ca5f69aed545a148db7d9c5726d3e9bb840e7bfd9925bb491cef6eab7',	'2025-04-02 19:30:43.075',	'20250402193042_timestamps',	NULL,	NULL,	'2025-04-02 19:30:42.654',	1),
 ('f23739f5-c63b-4731-be11-6396a2e76534',	'f8122f749fe2cc63fadde75268a84ea0e4c7bf16b630fcb1bbf246bd2bf0a6eb',	'2025-04-08 14:07:31.955',	'20250408140731_fulltext',	NULL,	NULL,	'2025-04-08 14:07:31.581',	1);
 
--- 2025-04-16 09:10:53 UTC
+-- 2025-04-16 16:10:14 UTC
