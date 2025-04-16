@@ -1,4 +1,7 @@
-<img src="./static/logo.svg" width="800" height="400" alt="css-in-readme">
+
+<div align="center">
+<img src="./static/logo2.png" style="filter: drop-shadow(0 0 5px rgb(70, 138, 113)); -webkit-filter: drop-shadow(0 0 5px rgb(70, 138, 113));">
+</div>
 
 > By Léo Lewandowski, Victor Dumortier, Sasha Le Roux & Pierre Butez
 
