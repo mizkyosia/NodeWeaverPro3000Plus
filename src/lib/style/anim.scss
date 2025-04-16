@@ -1,0 +1,50 @@
+@use "variables";
+@use "colors";
+
+main#anim {
+    position: relative;
+    background-color: black;
+    height: calc(100vh - variables.$header-size);
+
+    >svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+
+        min-width: 100%;
+        height: 100%;
+
+        pointer-events: none;
+
+        circle {
+            --delay: 0s;
+            fill: white;
+            transition: none;
+            stroke: none;
+
+            animation: pulse 15s linear var(--delay) infinite;
+        }
+
+        line {
+            opacity: 1;
+            stroke: gainsboro !important;
+            transition: none;
+        }
+    }
+
+}
+
+@keyframes pulse {
+    0% {
+        fill: gainsboro;
+    }
+
+    50% {
+        fill: rgb(49, 49, 49);
+    }
+
+    100% {
+        fill: gainsboro;
+    }
+}

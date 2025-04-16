@@ -16,6 +16,9 @@ export const load: LayoutServerLoad = async (event) => {
     // Fetch collections to which the user is subscribed
     const subscribed = await prisma.collection.findMany({
         where: {
+            visibility: {
+                in: ['RESTRICTED', 'PUBLIC']
+            },
             subscribers: {
                 some: {
                     id: event.locals.user.id

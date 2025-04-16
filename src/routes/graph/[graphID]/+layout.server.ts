@@ -29,7 +29,7 @@ export async function load({ params, route, locals }) {
         }
     });
 
-    // if (graph == null) return redirect(302, '/discover');
+    if (graph == null) return redirect(302, '/discover');
 
     return {
         graph

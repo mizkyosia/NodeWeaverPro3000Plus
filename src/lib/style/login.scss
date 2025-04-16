@@ -1,33 +1,14 @@
 @use "variables";
 @use "colors";
 
-main#login__main {
+dialog {
     position: relative;
-    background-color: black;
-    height: calc(100vh - variables.$header-size);
 
-    >dialog {
-        position: relative;
+    transition: all 0.4s linear;
 
-        transition: all .4s linear;
-
-        h2 {
-            margin: 0;
-            color: colors.$text-active;
-            text-shadow: 0 0 10px colors.$text-passive;
-        }
+    h2 {
+        margin: 0;
+        color: colors.$text-active;
+        text-shadow: 0 0 10px colors.$text-passive;
     }
-
-    >video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        object-fit: cover;
-
-        min-width: 100%;
-        height: 100%;
-
-        pointer-events: none;
-    }
-
 }

@@ -7,7 +7,6 @@
     import IconLink from "$lib/components/IconLink.svelte";
     import IconButton from "$lib/components/IconButton.svelte";
     import CollapseSection from "$lib/components/CollapseSection.svelte";
-    import Dialog from "$lib/components/Dialog.svelte";
 
     const { data } = $props();
 
@@ -130,9 +129,7 @@
                         true,
                     ),
                 );
-            } else if (context.inputs.movingNode) {
-                console.log(":3");
-            } else {
+            } else if (!context.inputs.movingNode) {
                 context.selectedNodes.forEach((n) => (n.selected = false));
                 context.selectedLinks.clear();
             }

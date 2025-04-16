@@ -88,7 +88,6 @@ export async function load(event) {
                 },
                 skip
             });
-            console.log("Searching...");
         }
         randomGraphs.push(graph);
     }
