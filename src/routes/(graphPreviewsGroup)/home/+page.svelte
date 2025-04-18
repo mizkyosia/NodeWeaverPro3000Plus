@@ -5,6 +5,10 @@
 
     // Define header state
     import { headerState } from "$lib/headerState.svelte";
+    import Icon from "$lib/components/Icon.svelte";
+    import IconButton from "$lib/components/IconButton.svelte";
+    import IconLink from "$lib/components/IconLink.svelte";
+    import { getContext } from "svelte";
     headerState.path = [
         {
             name: "Home",
@@ -13,7 +17,24 @@
     ];
 
     const { data } = $props();
+
+    const addingCollection: any = getContext("addingCollection");
 </script>
+
+<div id="home__title">
+    <h2><Icon name="home" /><span>Home</span></h2>
+    What will you create next ?
+    <span>
+        <IconButton
+            icon="box"
+            label="Collection"
+            action={() => {
+                addingCollection.adding = true;
+            }}
+        />
+        <IconLink icon="graphGeometry" label="Graph" link="/graph/create" />
+    </span>
+</div>
 
 <PreviewSection title="Finish what you started">
     {#each data.homeGraphs.lastUpdated as graph}

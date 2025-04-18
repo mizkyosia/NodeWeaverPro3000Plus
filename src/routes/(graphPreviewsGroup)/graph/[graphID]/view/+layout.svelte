@@ -319,6 +319,11 @@
                 const zoomPower = -e.deltaY / (context.inputs.ctrl ? 100 : 1);
 
                 context.zoom *= Math.pow(1.1, zoomPower);
+            } else if (context.inputs.shift) {
+                // Scroll only on x axis based on y delta
+                context.offset.x += (e.deltaY * 0.5) / context.zoom;
+
+                console.log("Mrrp meow :3");
             } else {
                 // Update offset based on scroll values and zoom
                 context.offset.x += (e.deltaX * 0.5) / context.zoom;

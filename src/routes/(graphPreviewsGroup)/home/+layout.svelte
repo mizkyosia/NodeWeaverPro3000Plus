@@ -8,13 +8,16 @@
     import "$lib/style/home.scss";
     import Icon from "$lib/components/Icon.svelte";
     import FormInput from "$lib/components/FormInput.svelte";
-    
-    let addingCollection = $state(false);
+    import { setContext } from "svelte";
+
+    let addingCollection = $state({ adding: false });
+
+    setContext("addingCollection", addingCollection);
 </script>
 
 <Dialog
     title="Create new collection"
-    bind:show={addingCollection}
+    bind:show={addingCollection.adding}
     action="/home?/addCollection"
 >
     <FormInput title="Name" name="title" type="text" />
@@ -28,7 +31,7 @@
 
 <main id="home">
     <nav class="buttonList">
-        <input id="home__search" type="text" placeholder="Search..." />
+        <!-- <input id="home__search" type="text" placeholder="Search..." /> -->
         <IconLink label="Home" icon="home" link="/home" />
         <IconLink label="Favorites" icon="heart" link="/home/favorites" />
 
@@ -36,7 +39,7 @@
         <div class="home__collectionBar">
             <span>My collections</span>
             <hr />
-            <button class="slimButton" onclick={() => (addingCollection = true)}
+            <button class="slimButton" onclick={() => (addingCollection.adding = true)}
                 ><Icon name="plus" /></button
             >
         </div>
